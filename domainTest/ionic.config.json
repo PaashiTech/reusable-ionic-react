@@ -1,0 +1,7 @@
+{
+  "name": "domainTest",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
