@@ -2,7 +2,12 @@ import "./Goals.css"
 import { Card, CardType } from "./basic/Card";
 
 interface GoalsData {
-  goals: { name:string, dueOn: Date, completion: number, details?: any }[],
+  goals: {
+    name:string, 
+    dueOn: Date, 
+    completion: number, 
+    details?: any
+  }[],
   meta?: any
 }
 
@@ -39,7 +44,6 @@ const Goals: React.FC<GoalsProps> = () => {
   return (
     <>
       {goalCards}
-      <Card title="" cardType={CardType.AddGoal}></Card>
     </>
   )
 }
