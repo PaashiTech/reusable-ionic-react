@@ -1,10 +1,13 @@
-import { IonFab, IonFabButton, IonFabList, IonIcon } from "@ionic/react";
+import { IonFab, IonFabButton, IonIcon } from "@ionic/react";
 import { add } from "ionicons/icons";
 import "./FAB.css";
 
-interface FABProps {}
+interface FABProps {
+  action:   () => void,
+  id:       string,
+}
 
-const FAB: React.FC<FABProps> = () => {
+const FAB: React.FC<FABProps> = ({ action, id }) => {
   return (
     <IonFab 
       style={{ marginRight: 20 + "px", marginBottom: 20 + "px" }} 
@@ -12,7 +15,7 @@ const FAB: React.FC<FABProps> = () => {
       vertical="bottom" 
       horizontal="end">
       {/* Main button */}
-      <IonFabButton>
+      <IonFabButton onClick={action} id={id}>
         <IonIcon icon={add}></IonIcon>
       </IonFabButton>
     </IonFab>
