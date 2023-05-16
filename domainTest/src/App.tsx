@@ -22,7 +22,16 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+// Mock server worker
+import { worker } from './mocks/browser';
+
 setupIonicReact();
+
+// Start the mock API worker
+// Doc Ref: https://mswjs.io/docs/getting-started/integrate/browser
+if (process.env.NODE_ENV === 'development') {
+  worker.start();
+}
 
 const App: React.FC = () => (
   <IonApp>
