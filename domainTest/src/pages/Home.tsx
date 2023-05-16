@@ -34,7 +34,7 @@ const Home: React.FC = () => {
   const title = "Money";
   const segmentButtons = segmentTabs.map((tabData) => {
     return (
-      <IonSegmentButton value={tabData.id}>
+      <IonSegmentButton key={tabData.id} value={tabData.id}>
         <IonLabel>{tabData.title}</IonLabel>
       </IonSegmentButton>
     )
