@@ -41,7 +41,6 @@ export const AddGoalModal: React.FC<AddGoalModalProps> = ({
 
     function isFutureDay(dateString: string) {
       const date = new Date(dateString);
-      const today = new Date();
 
       return today < date;
     }

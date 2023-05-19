@@ -1,6 +1,5 @@
 import "./Goals.css"
 import { Card, CardType } from "./basic/Card";
-import { Goal } from "../types/goal";
 import { useGoalApi } from "../API/goal/api";
 import { useMemo } from "react";
 import { IonLoading } from "@ionic/react";
@@ -25,7 +24,7 @@ const Goals: React.FC<GoalsProps> = () => {
         key={goalData.id}
         title={goalData.name}
         cardType={CardType.Goal}
-        subtitle={"Due: " + goalData.dueOn.toString().split('T')[0]}
+        subtitle={"Due: " + goalData.targetDate.toString().split('T')[0]}
         description={"Completed: " + goalData.completion + "%"}></Card>
     });
     return (
