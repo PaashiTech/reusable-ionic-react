@@ -29,7 +29,7 @@ const segmentTabs = [
 const Home: React.FC = () => {
   const [segmentState, setSegmentState] = useState(segmentTabs[0].id);
   const [addGoalModalState, setAddGoalModalState] = useState(false);
-  const [addGoalModalData, setAddGoalModalData] = useState<AddGoalModalData>({name: ''});
+  const [addGoalModalData, setAddGoalModalData] = useState<AddGoalModalData>({name: '', targetDateString: ""});
 
   const title = "Money";
   const segmentButtons = segmentTabs.map((tabData) => {
@@ -69,6 +69,8 @@ const Home: React.FC = () => {
         {/* Segment body */}
         {getSegmentBody(segmentState)}
         {addGoalModalData.name}
+        <br></br>
+        {addGoalModalData.targetDateString}
       </Container>
     </IonPage>
   );
