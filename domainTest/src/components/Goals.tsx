@@ -1,56 +1,41 @@
 import "./Goals.css"
 import { Card, CardType } from "./basic/Card";
-
-interface GoalsData {
-  goals: {
-    id: number,
-    name:string, 
-    dueOn: Date, 
-    completion: number, 
-    details?: any
-  }[],
-  meta?: any
-}
+import { Goal } from "../types/goal";
+import { useGoalApi } from "../API/goal/api";
+import { useMemo } from "react";
+import { IonLoading } from "@ionic/react";
 
 interface GoalsProps {}
 
-const goalsData: GoalsData = {
-  goals: [
-    {
-      id: 0,
-      name: "Car",
-      dueOn: new Date("2024-03-31"),
-      completion: 30
-    },
-    {
-      id: 1,
-      name: "House",
-      dueOn: new Date("2026-12-31"),
-      completion: 15
-    },
-    {
-      id: 2,
-      name: "iPhone",
-      dueOn: new Date("2023-06-30"),
-      completion: 60
-    }
-  ]
-}
-
 const Goals: React.FC<GoalsProps> = () => {
-  const goalCards = goalsData.goals.map((goalData) => {
-    return <Card 
-      key={goalData.id}
-      title={goalData.name}
-      cardType={CardType.Goal}
-      subtitle={"Due: " + goalData.dueOn.toDateString()}
-      description={"Completed: " + goalData.completion + "%"}></Card>
-  });
-  return (
-    <>
-      {goalCards}
-    </>
-  )
+  const {
+    getGoals: {
+      query: getGoals,
+      isLoading: getGoalsLoading,
+      data: getGoalsData
+    }
+  } = useGoalApi();
+  
+  //// TODO: Calls the API twice with MSW mock. Pretty ok, but not perfect.
+  const _getGoalsPromise = useMemo(getGoals, []);
+
+  function getGoalCards() {
+    const goalCards = getGoalsData?.goals?.map((goalData) => {
+      return <Card 
+        key={goalData.id}
+        title={goalData.name}
+        cardType={CardType.Goal}
+        subtitle={"Due: " + goalData.dueOn.toString().split('T')[0]}
+        description={"Completed: " + goalData.completion + "%"}></Card>
+    });
+    return (
+      <>
+        {goalCards}
+      </>
+    )
+  }
+
+  return getGoalsLoading ? <IonLoading></IonLoading> : getGoalCards();
 }
 
 export default Goals;

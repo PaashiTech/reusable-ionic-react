@@ -1,15 +1,6 @@
-interface GoalsData {
-  goals: {
-    id: number,
-    name:string, 
-    dueOn: Date, 
-    completion: number, 
-    details?: any
-  }[],
-  meta?: any
-}
+import { GetGoalsData } from "../../types/goal"
 
-export const goalsData: GoalsData = {
+export const goalsData: GetGoalsData = {
   goals: [
     {
       id: 0,
