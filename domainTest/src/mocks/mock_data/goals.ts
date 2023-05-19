@@ -1,6 +1,6 @@
-import { GetGoalsData } from "../../types/goal"
+import { GetGoalsOutput } from "../../API/goal/types";
 
-export const goalsData: GetGoalsData = {
+export const goalsData: GetGoalsOutput = {
   goals: [
     {
       id: 0,

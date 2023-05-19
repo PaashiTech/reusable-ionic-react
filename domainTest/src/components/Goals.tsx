@@ -3,6 +3,7 @@ import { Card, CardType } from "./basic/Card";
 import { useGoalApi } from "../API/goal/api";
 import { useMemo } from "react";
 import { IonLoading } from "@ionic/react";
+import { Goal } from "../types/goal";
 
 interface GoalsProps {}
 
@@ -19,7 +20,7 @@ const Goals: React.FC<GoalsProps> = () => {
   const _getGoalsPromise = useMemo(getGoals, []);
 
   function getGoalCards() {
-    const goalCards = getGoalsData?.goals?.map((goalData) => {
+    const goalCards = getGoalsData?.goals?.map((goalData: Goal) => {
       return <Card 
         key={goalData.id}
         title={goalData.name}

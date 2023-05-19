@@ -1,6 +1,6 @@
-import { GetGoalInput, CreateGoalInput } from "./types";
+import { GetGoalInput, CreateGoalInput, GetGoalsOutput } from "./types";
 import { useFetch } from "../_base/useFetch";
-import { GetGoalsData, Goal } from "../../types/goal";
+import { Goal } from "../../types/goal";
 
 export const useGetGoal = () => {
   // adding <Goal> after useFetch will give the "data" value the type Goal. 
@@ -20,7 +20,7 @@ export const useGetGoal = () => {
 }
 
 export const useGetGoals = () => {
-  const { commonFetch, isLoading, data } = useFetch<GetGoalsData>({
+  const { commonFetch, isLoading, data } = useFetch<GetGoalsOutput>({
     url: "/goals",
     method: "GET"
   });
