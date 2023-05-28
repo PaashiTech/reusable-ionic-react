@@ -21,17 +21,17 @@ export type DeleteGoalInput = {
   id: number
 }
 
-export type GetGoalsInput = null
+export type GetGoalsInput = {}
 
 
 // API outputs 
-export type CreateGoalOutput = null
+export type CreateGoalOutput = {}
 
 export type GetGoalOutput = Goal
 
-export type UpdateGoalOutput = null
+export type UpdateGoalOutput = {}
 
-export type DeleteGoalOutput = null
+export type DeleteGoalOutput = {}
 
 export type GetGoalsOutput = {
   goals: Goal[]

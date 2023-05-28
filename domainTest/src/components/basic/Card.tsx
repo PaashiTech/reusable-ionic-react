@@ -14,6 +14,8 @@ interface CardProps {
   subtitle?: string;
   description?: string;
   cardType?: CardType;
+  detailsButtonLink?: string;
+  editButtonLink?: string;
 };
 
 function renderButtons(cardType: CardType) {
@@ -28,7 +30,7 @@ function renderButtons(cardType: CardType) {
     }
     case CardType.Income: {
       buttons = <>
-        <IonButton fill="clear">Show Income Details</IonButton>
+        <IonButton fill="clear">Details</IonButton>
       </>
       break;
     }
@@ -40,7 +42,9 @@ export const Card: React.FC<CardProps> = ({
     title, 
     subtitle, 
     description, 
-    cardType=CardType.Base 
+    cardType=CardType.Base,
+    detailsButtonLink,
+    editButtonLink
   }) => {
   const addCard = (cardType == CardType.AddGoal) || (cardType == CardType.AddIncome);
   if (addCard) {

@@ -51,7 +51,7 @@ export const useGetGoals = () => {
     method: "GET"
   });
 
-  const getGoals = () => commonFetch({});
+  const getGoals = (input: GetGoalsInput) => commonFetch({});
 
   return { getGoals, isLoading, data };
 }
