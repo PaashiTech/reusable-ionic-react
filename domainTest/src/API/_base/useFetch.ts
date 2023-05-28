@@ -16,11 +16,11 @@ type CommonFetch = {
 }
 
 // <T> turns this into a generic component. We will take advantage of this 
-// by assigning the `data` variable the type T. If this doesn't make sense, 
-// it will when we get to the next file. 
+// by assigning the `data` variable the type T. 
 export function useFetch<T> ({ url, method }: UseFetchProps) {
   const [isLoading, setIsLoading] = useState(false);
   // we are assigning the generic type T to our data value here
+  // This is the type of the payload that is going to be returned by this API.
   const [data, setData] = useState<T | null>(null);
 
   const commonFetch = async ({
@@ -31,7 +31,7 @@ export function useFetch<T> ({ url, method }: UseFetchProps) {
 
     const response = await fetch(url, {
       method,
-      ...DEFAULT_FETCH_OPTIONS, // this should be defined as a const in a separate file
+      ...DEFAULT_FETCH_OPTIONS, // this should be defined as a const in a separate file 
       ...fetchOptions, // this allows you to override any default fetch options on a case by case basis
       body: JSON.stringify(input),
     });

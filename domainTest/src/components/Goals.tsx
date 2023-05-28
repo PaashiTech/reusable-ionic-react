@@ -1,7 +1,7 @@
 import "./Goals.css"
 import { Card, CardType } from "./basic/Card";
 import { useGoalApi } from "../API/goal/api";
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { IonLoading } from "@ionic/react";
 import { Goal } from "../types/goal";
 
@@ -17,7 +17,7 @@ const Goals: React.FC<GoalsProps> = () => {
   } = useGoalApi();
   
   //// TODO: Calls the API twice with MSW mock. Pretty ok, but not perfect.
-  const _getGoalsPromise = useMemo(getGoals, []);
+  useMemo(getGoals, []);
 
   function getGoalCards() {
     const goalCards = getGoalsData?.goals?.map((goalData: Goal) => {
