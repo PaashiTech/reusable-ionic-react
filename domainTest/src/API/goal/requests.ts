@@ -1,4 +1,10 @@
 import { 
+  // Param Types 
+  CreateGoalParams,
+  GetGoalParams,
+  GetGoalsParams,
+  UpdateGoalParams,
+  DeleteGoalParams,
   // Input types 
   CreateGoalInput, 
   GetGoalInput, 
@@ -11,7 +17,7 @@ import {
   GetGoalsOutput,
   UpdateGoalOutput,
   DeleteGoalOutput,
-  } from "./types";
+} from "./types";
 import { useFetch } from "../_base/useFetch";
 
 //// CREATE
@@ -21,7 +27,10 @@ export const useCreateGoal = () => {
     method: "POST"
   });
 
-  const createGoal = (input: CreateGoalInput) => commonFetch({ input });
+  const createGoal = (
+    params: CreateGoalParams, 
+    input: CreateGoalInput
+  ) => commonFetch({ params, input });
 
   return { createGoal, isLoading, data, status };
 }
@@ -40,7 +49,10 @@ export const useGetGoal = () => {
 
   // using typescript to define the input here means no mistakes can be
   // made downstream when actually using our API layer
-  const getGoal = (input: GetGoalInput) => commonFetch({ input });
+  const getGoal = (
+    params: GetGoalParams,
+    input: GetGoalInput
+  ) => commonFetch({ params, input });
 
   return { getGoal, isLoading, data, status };
 }
@@ -51,7 +63,10 @@ export const useGetGoals = () => {
     method: "GET"
   });
 
-  const getGoals = (input: GetGoalsInput) => commonFetch({ input });
+  const getGoals = (
+    params: GetGoalsParams,
+    input: GetGoalsInput
+  ) => commonFetch({ params, input });
 
   return { getGoals, isLoading, data, status };
 }
@@ -64,7 +79,10 @@ export const useUpdateGoal = () => {
     method: "POST"
   });
 
-  const updateGoal = (input: UpdateGoalInput) => commonFetch({ input });
+  const updateGoal = (
+    params: UpdateGoalParams,
+    input: UpdateGoalInput
+  ) => commonFetch({ params, input });
 
   return { updateGoal, isLoading, data, status };
 }
@@ -76,7 +94,10 @@ export const useDeleteGoal = () => {
     method: "POST"
   });
 
-  const deleteGoal = (input: DeleteGoalInput) => commonFetch({ input });
+  const deleteGoal = (
+    params: DeleteGoalParams,
+    input: DeleteGoalInput
+  ) => commonFetch({ params, input });
 
   return { deleteGoal, isLoading, data, status };
 }

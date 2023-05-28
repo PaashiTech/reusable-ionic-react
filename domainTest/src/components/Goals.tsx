@@ -17,7 +17,7 @@ const Goals: React.FC<GoalsProps> = () => {
   } = useGoalApi();
   
   //// TODO: Calls the API twice with MSW mock. Pretty ok, but not perfect.
-  useMemo(() => {return getGoals({})}, []);
+  useMemo(() => {return getGoals(null, null)}, []);
 
   function getGoalCards() {
     const goalCards = getGoalsData?.goals?.map((goalData: Goal) => {
