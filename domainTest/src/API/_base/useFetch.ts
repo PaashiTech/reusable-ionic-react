@@ -1,6 +1,5 @@
 import { useState } from "react";
-
-const DEFAULT_FETCH_OPTIONS = {};
+import axios from "axios";
 
 type UseFetchProps = {
   url: string;
@@ -22,6 +21,7 @@ export function useFetch<T> ({ url, method }: UseFetchProps) {
   // we are assigning the generic type T to our data value here
   // This is the type of the payload that is going to be returned by this API.
   const [data, setData] = useState<T | null>(null);
+  const [status, setStatus] = useState<number | null>(null);
 
   const commonFetch = async ({
     input,
@@ -29,18 +29,22 @@ export function useFetch<T> ({ url, method }: UseFetchProps) {
   }: CommonFetch) => {
     setIsLoading(true);
 
-    const response = await fetch(url, {
-      method,
-      ...DEFAULT_FETCH_OPTIONS, // this should be defined as a const in a separate file 
-      ...fetchOptions, // this allows you to override any default fetch options on a case by case basis
-      body: JSON.stringify(input),
+    // await fetch(url, {
+    //   method,
+    //   ...DEFAULT_FETCH_OPTIONS, // this should be defined as a const in a separate file 
+    //   ...fetchOptions, // this allows you to override any default fetch options on a case by case basis
+    //   body: JSON.stringify(input),
+    // });
+    const { data, status } = await axios.request({
+      url: url,
+      method: method,
+      params: input
     });
-
-    const data = await response.json();
-
+    
     setIsLoading(false);
+    setStatus(status);
     setData(data);
   };
 
-  return { commonFetch, isLoading, data };
+  return { commonFetch, isLoading, data, status };
 }

@@ -5,19 +5,22 @@ export const useGoalApi = () => {
   const {
     createGoal,
     isLoading: createGoalLoading,
-    data: createGoalData
+    data: createGoalData,
+    status: createGoalStatus
   } = useCreateGoal();
 
   const {
     getGoal,
     isLoading: getGoalLoading,
-    data: getGoalData
+    data: getGoalData,
+    status: getGoalStatus
   } = useGetGoal();
 
   const {
     getGoals,
     isLoading: getGoalsLoading,
-    data: getGoalsData
+    data: getGoalsData,
+    status: getGoalsStatus
   } = useGetGoals();
 
   // Return them IN THE SAME ORDER as that of calling them. 
@@ -25,17 +28,20 @@ export const useGoalApi = () => {
     createGoal: {
       mutation: createGoal,
       isLoading: createGoalLoading,
-      data: createGoalData
+      data: createGoalData,
+      status: createGoalStatus
     },
     getGoal: {
       query: getGoal,
       isLoading: getGoalLoading,
-      data: getGoalData
+      data: getGoalData,
+      status: getGoalStatus
     },
     getGoals: {
       query: getGoals,
       isLoading: getGoalsLoading,
-      data: getGoalsData
+      data: getGoalsData,
+      status: getGoalsStatus
     }
   }
 }
