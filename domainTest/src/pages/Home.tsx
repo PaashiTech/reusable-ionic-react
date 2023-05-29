@@ -29,8 +29,8 @@ const segmentTabs = [
 
 const Home: React.FC = () => {
   const [segmentState, setSegmentState] = useState(segmentTabs[0].id);
-  const [goalModalState, setGoalModalState] = useState(false);
-  const [goalModalData, setGoalModalData] = useState<GoalModalData>({
+  const [addGoalModalState, setAddGoalModalState] = useState(false);
+  const [addGoalModalData, setAddGoalModalData] = useState<GoalModalData>({
     name: '', 
     targetDateString: ""
   });
@@ -56,13 +56,13 @@ const Home: React.FC = () => {
   return (
     <IonPage>
       {/* IMPORTANT: FAB needs to be a part of the IonPage, not the Container */}
-      <FAB action={() => {setGoalModalState(true)}} id='fab'></FAB>
+      <FAB action={() => {setAddGoalModalState(true)}} id='fab'></FAB>
 
       <Container header={title}>
         <AddGoalModal 
-          isModalOpen={goalModalState}
-          setIsModalOpen={setGoalModalState}
-          setModalData={setGoalModalData}>
+          isModalOpen={addGoalModalState}
+          setIsModalOpen={setAddGoalModalState}
+          setModalData={setAddGoalModalData}>
         </AddGoalModal>
 
         {/* Segment tabs */}
@@ -72,9 +72,9 @@ const Home: React.FC = () => {
         
         {/* Segment body */}
         {getSegmentBody(segmentState)}
-        {goalModalData.name}
+        {addGoalModalData.name}
         <br></br>
-        {goalModalData.targetDateString}
+        {addGoalModalData.targetDateString}
       </Container>
     </IonPage>
   );

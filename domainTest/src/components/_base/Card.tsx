@@ -1,4 +1,4 @@
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonIcon } from "@ionic/react";
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonGrid, IonIcon, IonRow } from "@ionic/react";
 import "./Card.css"
 import { trashBinOutline } from "ionicons/icons";
 import { CardType } from "./types";
@@ -8,34 +8,45 @@ interface CardProps {
   subtitle?: string;
   description?: string;
   cardType?: CardType;
-  detailsButton?: string;
-  editButton?: string;
+  onEditButton?: () => void;
+  onDetailsButton?: () => void;
 };
 
-function renderButtons(cardType: CardType) {
+function renderButtons(
+  cardType: CardType, 
+  edit: (() => void) | undefined, 
+  details: (() => void) | undefined) {
   let buttons: React.ReactElement = <></>;
   switch(cardType) {
     case CardType.Goal: {
       buttons = <>
-        <IonButton fill="clear">Edit</IonButton>
-        <IonButton fill="clear">Details</IonButton>
+        <IonButton fill="clear" onClick={edit}>
+          Edit
+        </IonButton>
+        <IonButton fill="clear" onClick={details}>
+          Details
+        </IonButton>
       </>
       break; 
     }
     case CardType.Income: {
       buttons = <>
-        <IonButton fill="clear">Details</IonButton>
+        <IonButton fill="clear" onClick={details}>
+          Details
+        </IonButton>
       </>
       break;
     }
   }
   return (
-    <>
-      {buttons}
-      <IonButton fill="clear" color="danger">
-        <IonIcon slot="icon-only" icon={trashBinOutline}></IonIcon>
-      </IonButton>
-    </>
+    <IonGrid>
+      <IonRow>
+        {buttons}
+        <IonButton className="delete-button" fill="clear" color="danger" >
+          <IonIcon slot="icon-only" icon={trashBinOutline}></IonIcon>
+        </IonButton>
+      </IonRow>
+    </IonGrid>
   );
 }
 
@@ -44,8 +55,8 @@ export const Card: React.FC<CardProps> = ({
     subtitle, 
     description, 
     cardType=CardType.Base,
-    detailsButton,
-    editButton
+    onEditButton,
+    onDetailsButton
   }) => {
   return (
     <IonCard>
@@ -58,7 +69,7 @@ export const Card: React.FC<CardProps> = ({
       {/* Card description */}
       {description && <IonCardContent>{description}</IonCardContent>}
       
-      {renderButtons(cardType)}
+      {renderButtons(cardType, onEditButton, onDetailsButton)}
     </IonCard>
   )
 }

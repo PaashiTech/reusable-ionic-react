@@ -2,9 +2,11 @@ import "./Goals.css"
 import { Card } from "../_base/Card";
 import { CardType } from "../_base/types";
 import { useGoalApi } from "../../API/goal/api";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { IonLoading } from "@ionic/react";
 import { Goal } from "../../types/goal";
+import { GoalModalData } from "./types";
+import { EditGoalModal } from "./EditGoalModal";
 
 interface GoalsProps {}
 
@@ -27,6 +29,18 @@ const Goals: React.FC<GoalsProps> = () => {
   //// TODO: Calls the API twice with MSW mock. Pretty ok, but not perfect.
   useMemo(() => {return getGoals(null, null)}, []);
 
+  const [editGoalModalState, setEditGoalModalState] = useState(false);
+  const [editGoalModalData, setEditGoalModalData] = useState<GoalModalData>({
+    name: '', 
+    targetDateString: ""
+  });
+
+  function showEditModal(data: GoalModalData) {
+    setEditGoalModalData(data);
+
+    setEditGoalModalState(true);
+  }
+
   function getGoalCards() {
     const goalCards = getGoalsData?.goals?.map((goalData: Goal) => {
       return <Card 
@@ -35,10 +49,22 @@ const Goals: React.FC<GoalsProps> = () => {
         cardType={CardType.Goal}
         subtitle={"Due: " + goalData.targetDate.toString().split('T')[0]}
         description={"Completed: " + goalData.completion + "%"}
-        editButton=""></Card>
+        onEditButton={() => {
+          showEditModal({ 
+            name: goalData.name, 
+            targetDateString: goalData.targetDate.toString().split('T')[0] 
+          })} 
+        }></Card>
     });
     return (
       <>
+        <EditGoalModal
+          isModalOpen={editGoalModalState}
+          modalPreviousData={editGoalModalData}
+          setModalData={setEditGoalModalData}
+          setIsModalOpen={setEditGoalModalState}
+          >
+        </EditGoalModal>
         {goalCards}
       </>
     )
