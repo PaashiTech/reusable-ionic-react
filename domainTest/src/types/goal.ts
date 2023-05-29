@@ -1,6 +1,6 @@
 export type Goal = {
-  id: number,
-  name:string, 
+  id: string,
+  name: string, 
   targetDate: Date, 
   completion: number, 
   details?: any

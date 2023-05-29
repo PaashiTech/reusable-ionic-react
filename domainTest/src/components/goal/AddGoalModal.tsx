@@ -2,17 +2,13 @@ import { ReactNode, useRef } from "react";
 import "./AddGoalModal.css"
 import { Modal } from "../_base/Modal";
 import { IonButton, IonDatetime, IonInput, IonItem, IonLabel } from "@ionic/react";
+import { GoalModalData } from "./types";
 
 interface AddGoalModalProps {
   children: ReactNode,
   isModalOpen: boolean,
   setIsModalOpen: (value: React.SetStateAction<boolean>) => void,
-  setModalData: (value: React.SetStateAction<AddGoalModalData>) => void
-}
-
-export interface AddGoalModalData {
-  name: string | undefined,
-  targetDateString: string | string[] | null | undefined
+  setModalData: (value: React.SetStateAction<GoalModalData>) => void
 }
 
 export const AddGoalModal: React.FC<AddGoalModalProps> = ({ 
@@ -29,7 +25,7 @@ export const AddGoalModal: React.FC<AddGoalModalProps> = ({
 
     function getModalData() {
       // Extract modal data here
-      let modalData: AddGoalModalData = {
+      let modalData: GoalModalData = {
         name: nameInput.current?.value?.toString(),
         targetDateString: targetDateInput.current?.value?.toString().split('T')[0]
       };

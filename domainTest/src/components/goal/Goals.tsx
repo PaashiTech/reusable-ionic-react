@@ -14,28 +14,30 @@ const Goals: React.FC<GoalsProps> = () => {
   const {
     editGoal: {
       query: editGoal,
-      isLoading: editGoalLoading,
-      data: editGoalData,
-      status: editGoalStatus
+      isLoading: editGoalLoading, // Unused
+      data: editGoalData,         // Unused
+      status: editGoalStatus      // Unused
     },
     getGoals: {
       query: getGoals,
       isLoading: getGoalsLoading,
       data: getGoalsData,
-      status: getGoalsStatus
+      status: getGoalsStatus      // Unused
     }
   } = useGoalApi();
   
   //// TODO: Calls the API twice with MSW mock. Pretty ok, but not perfect.
-  useMemo(() => {return getGoals(null, null)}, []);
+  useMemo(() => {return getGoals(null, null)}, [editGoalStatus]);
 
   const [editGoalModalState, setEditGoalModalState] = useState(false);
+  const [editGoalId, setEditGoalId] = useState("");
   const [editGoalModalData, setEditGoalModalData] = useState<GoalModalData>({
     name: '', 
     targetDateString: ""
   });
 
-  function showEditModal(data: GoalModalData) {
+  function showEditModal(id: string, data: GoalModalData) {
+    setEditGoalId(id);
     setEditGoalModalData(data);
     setEditGoalModalState(true);
   }
@@ -49,19 +51,24 @@ const Goals: React.FC<GoalsProps> = () => {
         subtitle={"Due: " + goalData.targetDate.toString().split('T')[0]}
         description={"Completed: " + goalData.completion + "%"}
         onEditButton={() => {
-          showEditModal({ 
-            name: goalData.name, 
-            targetDateString: goalData.targetDate.toString().split('T')[0] 
-          })} 
+          showEditModal(
+            goalData.id,
+            { 
+              name: goalData.name, 
+              targetDateString: goalData.targetDate.toString().split('T')[0]
+            }
+          )} 
         }></Card>
     });
     return (
       <>
         <EditGoalModal
           isModalOpen={editGoalModalState}
+          setIsModalOpen={setEditGoalModalState}
           modalPreviousData={editGoalModalData}
           setModalData={setEditGoalModalData}
-          setIsModalOpen={setEditGoalModalState}
+          editGoalId={editGoalId}
+          onSave={editGoal}
           >
         </EditGoalModal>
         {goalCards}

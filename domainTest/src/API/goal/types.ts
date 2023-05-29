@@ -26,7 +26,8 @@ export type CreateGoalInput = {
 export type GetGoalInput = null;
 
 export type EditGoalInput = {
-  goal: Goal,
+  name: string,
+  targetDate: Date,
   udpatedOn: string
 }
 
