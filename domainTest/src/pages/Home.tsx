@@ -72,9 +72,6 @@ const Home: React.FC = () => {
         
         {/* Segment body */}
         {getSegmentBody(segmentState)}
-        {addGoalModalData.name}
-        <br></br>
-        {addGoalModalData.targetDateString}
       </Container>
     </IonPage>
   );

@@ -2,8 +2,8 @@ import "./Goals.css"
 import { Card } from "../_base/Card";
 import { CardType } from "../_base/types";
 import { useGoalApi } from "../../API/goal/api";
-import { useEffect, useMemo, useState } from "react";
-import { IonLoading } from "@ionic/react";
+import { useEffect, useState } from "react";
+import { IonSpinner } from "@ionic/react";
 import { Goal } from "../../types/goal";
 import { GoalModalData } from "./types";
 import { EditGoalModal } from "./EditGoalModal";
@@ -14,15 +14,13 @@ const Goals: React.FC<GoalsProps> = () => {
   const {
     editGoal: {
       query: editGoal,
-      isLoading: editGoalLoading, // Unused
-      data: editGoalData,         // Unused
-      status: editGoalStatus      // Unused
+      isLoading: editGoalLoading,
+      data: editGoalData,
     },
     getGoals: {
       query: getGoals,
       isLoading: getGoalsLoading,
-      data: getGoalsData,
-      status: getGoalsStatus      // Unused
+      data: getGoalsData
     }
   } = useGoalApi();
   
@@ -48,7 +46,7 @@ const Goals: React.FC<GoalsProps> = () => {
         key={goalData.id}
         title={goalData.name}
         cardType={CardType.Goal}
-        subtitle={"Due: " + goalData.targetDate.toString().split('T')[0]}
+        subtitle={"Due: " + goalData.targetDate.split('T')[0]}
         description={"Completed: " + goalData.completion + "%"}
         onEditButton={() => {
           showEditModal(
@@ -68,6 +66,7 @@ const Goals: React.FC<GoalsProps> = () => {
           modalPreviousData={editGoalModalData}
           setModalData={setEditGoalModalData}
           editGoalId={editGoalId}
+          editGoalLoading={editGoalLoading}
           onSave={editGoal}
           >
         </EditGoalModal>
@@ -76,7 +75,11 @@ const Goals: React.FC<GoalsProps> = () => {
     )
   }
 
-  return getGoalsLoading ? <IonLoading></IonLoading> : getGoalCards();
+  return getGoalsLoading ? 
+    <div className="loading-spinner-container">
+      <IonSpinner className="loading-spinner"></IonSpinner>
+    </div> : 
+    getGoalCards();
 }
 
 export default Goals;

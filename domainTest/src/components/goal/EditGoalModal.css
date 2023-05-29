@@ -12,3 +12,12 @@
   /* For centering the button */
   margin: auto;
 }
+
+.loading-spinner-container {
+  display: flex;
+  margin: auto;
+}
+
+.loading-spinner {
+  margin: auto;
+}
