@@ -21,6 +21,7 @@ export const handlers = [
     })
 
     return res(
+      // ctx.delay(1000),       // To mock delay in the response 
       ctx.status(200),
       ctx.json({})
     )
@@ -29,7 +30,6 @@ export const handlers = [
   // Send all goals 
   rest.get('/goals', (req, res, ctx) => {
     return res(
-      ctx.delay(1000),
       ctx.status(200),
       ctx.json(goalsDataMutable)
     )
