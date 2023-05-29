@@ -1,21 +1,17 @@
 import { ReactNode, useRef } from "react";
-import "./AddGoalModal.css"
-import { Modal } from "./basic/Modal";
+import "./EditGoalModal.css"
+import { Modal } from "../_base/Modal";
 import { IonButton, IonDatetime, IonInput, IonItem, IonLabel } from "@ionic/react";
+import { GoalModalData } from "./types";
 
-interface AddGoalModalProps {
+interface EditGoalModalProps {
   children: ReactNode,
   isModalOpen: boolean,
   setIsModalOpen: (value: React.SetStateAction<boolean>) => void,
-  setModalData: (value: React.SetStateAction<AddGoalModalData>) => void
+  setModalData: (value: React.SetStateAction<GoalModalData>) => void
 }
 
-export interface AddGoalModalData {
-  name: string | undefined,
-  targetDateString: string | string[] | null | undefined
-}
-
-export const AddGoalModal: React.FC<AddGoalModalProps> = ({ 
+export const AddGoalModal: React.FC<EditGoalModalProps> = ({ 
   children,
   isModalOpen, 
   setIsModalOpen, 
@@ -29,7 +25,7 @@ export const AddGoalModal: React.FC<AddGoalModalProps> = ({
 
     function getModalData() {
       // Extract modal data here
-      let modalData: AddGoalModalData = {
+      let modalData: GoalModalData = {
         name: nameInput.current?.value?.toString(),
         targetDateString: targetDateInput.current?.value?.toString().split('T')[0]
       };
@@ -47,7 +43,7 @@ export const AddGoalModal: React.FC<AddGoalModalProps> = ({
 
     return (
       <Modal 
-        title="Add Goal"
+        title="Edit Goal"
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         >

@@ -1,12 +1,13 @@
 import { IonLabel, IonPage, IonSegment, IonSegmentButton, SegmentCustomEvent } from '@ionic/react';
 import './Home.css';
-import Container from '../components/basic/Container';
-import Goals from '../components/Goals';
-import FAB from '../components/basic/FAB';
-import Income from '../components/Income';
-import Expenses from '../components/Expenses';
+import Container from '../components/_base/Container';
+import Goals from '../components/goal/Goals';
+import FAB from '../components/_base/FAB';
+import Income from '../components/income/Income';
+import Expenses from '../components/expense/Expenses';
 import { useState } from 'react';
-import { AddGoalModal, AddGoalModalData } from '../components/AddGoalModal';
+import { AddGoalModal } from '../components/goal/AddGoalModal';
+import { GoalModalData } from '../components/goal/types';
 
 const segmentTabs = [
   {
@@ -28,8 +29,11 @@ const segmentTabs = [
 
 const Home: React.FC = () => {
   const [segmentState, setSegmentState] = useState(segmentTabs[0].id);
-  const [addGoalModalState, setAddGoalModalState] = useState(false);
-  const [addGoalModalData, setAddGoalModalData] = useState<AddGoalModalData>({name: '', targetDateString: ""});
+  const [goalModalState, setGoalModalState] = useState(false);
+  const [goalModalData, setGoalModalData] = useState<GoalModalData>({
+    name: '', 
+    targetDateString: ""
+  });
 
   const title = "Money";
   const segmentButtons = segmentTabs.map((tabData) => {
@@ -52,13 +56,13 @@ const Home: React.FC = () => {
   return (
     <IonPage>
       {/* IMPORTANT: FAB needs to be a part of the IonPage, not the Container */}
-      <FAB action={() => {setAddGoalModalState(true)}} id='fab'></FAB>
+      <FAB action={() => {setGoalModalState(true)}} id='fab'></FAB>
 
       <Container header={title}>
         <AddGoalModal 
-          isModalOpen={addGoalModalState}
-          setIsModalOpen={setAddGoalModalState}
-          setModalData={setAddGoalModalData}>
+          isModalOpen={goalModalState}
+          setIsModalOpen={setGoalModalState}
+          setModalData={setGoalModalData}>
         </AddGoalModal>
 
         {/* Segment tabs */}
@@ -68,9 +72,9 @@ const Home: React.FC = () => {
         
         {/* Segment body */}
         {getSegmentBody(segmentState)}
-        {addGoalModalData.name}
+        {goalModalData.name}
         <br></br>
-        {addGoalModalData.targetDateString}
+        {goalModalData.targetDateString}
       </Container>
     </IonPage>
   );

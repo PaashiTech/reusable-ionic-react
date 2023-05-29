@@ -1,4 +1,9 @@
-import { useGetGoal, useGetGoals, useCreateGoal } from "./requests";
+import { 
+  useCreateGoal,
+  useGetGoal, 
+  useGetGoals, 
+  useEditGoal 
+} from "./requests";
 
 export const useGoalApi = () => {
   // Use hooks for all APIs, get their state variables and data 
@@ -23,6 +28,13 @@ export const useGoalApi = () => {
     status: getGoalsStatus
   } = useGetGoals();
 
+  const {
+    editGoal,
+    isLoading: editGoalLoading,
+    data: editGoalData,
+    status: editGoalStatus
+  } = useEditGoal();
+
   // Return them IN THE SAME ORDER as that of calling them. 
   return {
     createGoal: {
@@ -42,6 +54,12 @@ export const useGoalApi = () => {
       isLoading: getGoalsLoading,
       data: getGoalsData,
       status: getGoalsStatus
+    },
+    editGoal: {
+      query: editGoal,
+      isLoading: editGoalLoading,
+      data: editGoalData,
+      status: editGoalStatus
     }
   }
 }

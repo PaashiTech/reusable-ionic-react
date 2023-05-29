@@ -7,11 +7,13 @@ export type GetGoalParams = {
   id: string 
 };
 
-export type UpdateGoalParams = null;
+export type GetGoalsParams = null;
+
+export type EditGoalParams = {
+  id: string
+};
 
 export type DeleteGoalParams = null;
-
-export type GetGoalsParams = null;
 
 
 // API inputs
@@ -23,8 +25,7 @@ export type CreateGoalInput = {
 
 export type GetGoalInput = null;
 
-export type UpdateGoalInput = {
-  id: number,
+export type EditGoalInput = {
   goal: Goal,
   udpatedOn: string
 }
@@ -41,7 +42,7 @@ export type CreateGoalOutput = null
 
 export type GetGoalOutput = Goal
 
-export type UpdateGoalOutput = null
+export type EditGoalOutput = null
 
 export type DeleteGoalOutput = null
 

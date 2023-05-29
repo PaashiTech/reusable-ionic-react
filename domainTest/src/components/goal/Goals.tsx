@@ -1,18 +1,26 @@
 import "./Goals.css"
-import { Card, CardType } from "./basic/Card";
-import { useGoalApi } from "../API/goal/api";
-import { useCallback, useEffect, useMemo } from "react";
+import { Card } from "../_base/Card";
+import { CardType } from "../_base/types";
+import { useGoalApi } from "../../API/goal/api";
+import { useMemo } from "react";
 import { IonLoading } from "@ionic/react";
-import { Goal } from "../types/goal";
+import { Goal } from "../../types/goal";
 
 interface GoalsProps {}
 
 const Goals: React.FC<GoalsProps> = () => {
   const {
+    editGoal: {
+      query: editGoal,
+      isLoading: editGoalLoading,
+      data: editGoalData,
+      status: editGoalStatus
+    },
     getGoals: {
       query: getGoals,
       isLoading: getGoalsLoading,
-      data: getGoalsData
+      data: getGoalsData,
+      status: getGoalsStatus
     }
   } = useGoalApi();
   
@@ -27,7 +35,7 @@ const Goals: React.FC<GoalsProps> = () => {
         cardType={CardType.Goal}
         subtitle={"Due: " + goalData.targetDate.toString().split('T')[0]}
         description={"Completed: " + goalData.completion + "%"}
-        editButtonLink=""></Card>
+        editButton=""></Card>
     });
     return (
       <>

@@ -3,19 +3,19 @@ import {
   CreateGoalParams,
   GetGoalParams,
   GetGoalsParams,
-  UpdateGoalParams,
+  EditGoalParams,
   DeleteGoalParams,
   // Input types 
   CreateGoalInput, 
   GetGoalInput, 
   GetGoalsInput,
+  EditGoalInput,
   DeleteGoalInput, 
-  UpdateGoalInput,
   // Output types 
   CreateGoalOutput, 
   GetGoalOutput, 
   GetGoalsOutput,
-  UpdateGoalOutput,
+  EditGoalOutput,
   DeleteGoalOutput,
 } from "./types";
 import { useFetch } from "../_base/useFetch";
@@ -73,19 +73,20 @@ export const useGetGoals = () => {
 
 
 //// UPDATE
-export const useUpdateGoal = () => {
-  const { commonFetch, isLoading, data, status } = useFetch<UpdateGoalOutput>({
-    url: "/updateGoal",
+export const useEditGoal = () => {
+  const { commonFetch, isLoading, data, status } = useFetch<EditGoalOutput>({
+    url: "/editGoal",
     method: "POST"
   });
 
-  const updateGoal = (
-    params: UpdateGoalParams,
-    input: UpdateGoalInput
+  const editGoal = (
+    params: EditGoalParams,
+    input: EditGoalInput
   ) => commonFetch({ params, input });
 
-  return { updateGoal, isLoading, data, status };
+  return { editGoal, isLoading, data, status };
 }
+
 
 //// DELETE
 export const useDeleteGoal = () => {
