@@ -1,7 +1,7 @@
 import { ReactNode, useRef } from "react";
 import "./AddGoalModal.css"
 import { Modal } from "../_base/Modal";
-import { IonButton, IonDatetime, IonInput, IonItem, IonLabel } from "@ionic/react";
+import { IonButton, IonDatetime, IonGrid, IonInput, IonItem, IonLabel, IonRow } from "@ionic/react";
 
 interface AddGoalModalProps {
   children: ReactNode,
@@ -51,11 +51,13 @@ export const AddGoalModal: React.FC<AddGoalModalProps> = ({
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         >
+        
         {/* Name of the goal */}
         <IonItem>
           <IonLabel position="stacked">Name</IonLabel>
           <IonInput ref={nameInput} type="text" placeholder="Name of the goal" aria-label="name"></IonInput>
         </IonItem>
+        
         {/* Target date */}
         <IonDatetime 
           presentation="date"
@@ -66,8 +68,11 @@ export const AddGoalModal: React.FC<AddGoalModalProps> = ({
           ref={targetDateInput}>
           <span slot="title">Select a target Date</span>
         </IonDatetime>
+        
         {/* Save button */}
-        <IonButton onClick={getModalData}>Save</IonButton>
+        <div className="save-button-container">
+          <IonButton className="save-button" onClick={getModalData}>Save</IonButton>
+        </div>
       </Modal>
     )
 }

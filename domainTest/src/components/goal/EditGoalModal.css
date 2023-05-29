@@ -2,3 +2,13 @@
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+.save-button-container {
+  display: flex;
+  padding-top: 10px;
+}
+
+.save-button {
+  /* For centering the button */
+  margin: auto;
+}

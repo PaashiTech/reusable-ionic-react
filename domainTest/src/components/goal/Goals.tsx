@@ -37,7 +37,6 @@ const Goals: React.FC<GoalsProps> = () => {
 
   function showEditModal(data: GoalModalData) {
     setEditGoalModalData(data);
-
     setEditGoalModalState(true);
   }
 

@@ -72,7 +72,9 @@ export const EditGoalModal: React.FC<EditGoalModalProps> = ({
           <span slot="title">Select a target Date</span>
         </IonDatetime>
         {/* Save button */}
-        <IonButton onClick={getModalData}>Save</IonButton>
+        <div className="save-button-container">
+          <IonButton className="save-button" onClick={getModalData}>Save</IonButton>
+        </div>
       </Modal>
     )
 }
