@@ -21,6 +21,7 @@ export const handlers = [
     })
 
     return res(
+      // ctx.delay(1000),       // To mock delay in the response 
       ctx.status(200),
       ctx.json({})
     )

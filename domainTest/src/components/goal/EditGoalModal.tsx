@@ -1,7 +1,7 @@
-import { ReactNode, useEffect, useRef } from "react";
+import { ReactNode, useRef, useState } from "react";
 import "./EditGoalModal.css"
 import { Modal } from "../_base/Modal";
-import { IonButton, IonDatetime, IonInput, IonItem, IonLabel } from "@ionic/react";
+import { IonButton, IonDatetime, IonInput, IonItem, IonLabel, IonSpinner } from "@ionic/react";
 import { GoalModalData } from "./types";
 import { EditGoalInput, EditGoalParams } from "../../API/goal/types";
 
@@ -27,6 +27,8 @@ export const EditGoalModal: React.FC<EditGoalModalProps> = ({
     const nameInput = useRef<HTMLIonInputElement>(null);
     const targetDateInput = useRef<HTMLIonDatetimeElement>(null);
 
+    const [isSaveDisabled, setIsSaveDisabled] = useState(false);
+
     const today: Date = new Date();
     const minDate: Date = new Date(today.getFullYear(), today.getMonth(), 1);
     const maxDate: Date = new Date(today.getFullYear() + 100, today.getMonth(), 0);
@@ -41,14 +43,17 @@ export const EditGoalModal: React.FC<EditGoalModalProps> = ({
       }
     }
 
-    async function getModalData() {
+    function getModalData() {
+      // Prevent double-click
+      setIsSaveDisabled(true);
+
       // Extract modal data here
       let modalData: GoalModalData = {
         name: nameInput.current?.value?.toString(),
         targetDateString: targetDateInput.current?.value
       };
 
-      await onSave(
+      onSave(
         { 
           id: editGoalId 
         }, 
@@ -57,13 +62,13 @@ export const EditGoalModal: React.FC<EditGoalModalProps> = ({
           targetDate: getValidNewDate(modalData.targetDateString),
           udpatedOn: today.toString()
         }
-      );
+      ).then(value => {
+        // Cause the parent to re-render 
+        setModalData(modalData);
 
-      // Cause the parent to re-render 
-      setModalData(modalData);
-
-      // Close the modal
-      setIsModalOpen(false);
+        // Close the modal
+        setIsModalOpen(false);
+      });
     }
 
     function isFutureDay(dateString: string) {
@@ -104,7 +109,12 @@ export const EditGoalModal: React.FC<EditGoalModalProps> = ({
 
         {/* Save button */}
         <div className="save-button-container">
-          <IonButton className="save-button" onClick={getModalData}>Save</IonButton>
+          <IonButton 
+            disabled={isSaveDisabled}
+            className="save-button" 
+            onClick={getModalData}>
+            {isSaveDisabled? <><IonSpinner ></IonSpinner></> : <>Save</>}
+          </IonButton>
         </div>
       </Modal>
     )
