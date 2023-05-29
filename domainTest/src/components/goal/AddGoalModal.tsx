@@ -1,7 +1,7 @@
 import { ReactNode, useRef } from "react";
 import "./AddGoalModal.css"
 import { Modal } from "../_base/Modal";
-import { IonButton, IonDatetime, IonGrid, IonInput, IonItem, IonLabel, IonRow } from "@ionic/react";
+import { IonButton, IonDatetime, IonInput, IonItem, IonLabel } from "@ionic/react";
 
 interface AddGoalModalProps {
   children: ReactNode,
