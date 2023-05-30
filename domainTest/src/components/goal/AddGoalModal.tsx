@@ -1,21 +1,30 @@
-import { ReactNode, useRef } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { ReactNode, useRef, useState } from "react";
 import "./AddGoalModal.css"
 import { Modal } from "../_base/Modal";
 import { IonButton, IonDatetime, IonInput, IonItem, IonLabel } from "@ionic/react";
 import { GoalModalData } from "./types";
+import { AddGoalInput } from "../../API/goal/types";
+import { useGoalApi } from "../../API/goal/api";
 
 interface AddGoalModalProps {
   children: ReactNode,
   isModalOpen: boolean,
-  setIsModalOpen: (value: React.SetStateAction<boolean>) => void,
-  setModalData: (value: React.SetStateAction<GoalModalData>) => void
+  setIsModalOpen: (value: React.SetStateAction<boolean>) => void
 }
 
 export const AddGoalModal: React.FC<AddGoalModalProps> = ({ 
   children,
   isModalOpen, 
-  setIsModalOpen, 
-  setModalData}) => {
+  setIsModalOpen}) => {
+    const goalId = uuidv4();
+    const {
+      addGoal: {
+        mutation: addGoal,
+        isLoading: addGoalLoading
+      }
+    } = useGoalApi(goalId);
+
     const nameInput = useRef<HTMLIonInputElement>(null);
     const targetDateInput = useRef<HTMLIonDatetimeElement>(null);
 
@@ -23,16 +32,39 @@ export const AddGoalModal: React.FC<AddGoalModalProps> = ({
     const minDate: Date = new Date(today.getFullYear(), today.getMonth(), 1);
     const maxDate: Date = new Date(today.getFullYear() + 100, today.getMonth(), 0);
 
-    function getModalData() {
+    function getValidNewDate(dStr: string | string[] | null | undefined) {
+      if (typeof(dStr) === "string") {
+        return new Date(dStr).toISOString();
+      } else if (Array.isArray(dStr)) {
+        return new Date(dStr[0]).toISOString();
+      } else {
+        return maxDate.toISOString();
+      }
+    }
+
+    function onAddGoal() {
       // Extract modal data here
       let modalData: GoalModalData = {
         name: nameInput.current?.value?.toString(),
         targetDateString: targetDateInput.current?.value?.toString().split('T')[0]
       };
-      setModalData(modalData);
 
-      // Close the modal
-      setIsModalOpen(false);
+      const addGoalInput: AddGoalInput = {
+        goal: {
+          id: goalId,
+          name: modalData.name!,
+          targetDate: getValidNewDate(modalData.targetDateString),
+          completion: 0
+        },
+        createdOn: today.toISOString(),
+        updatedOn: today.toISOString()
+      }
+
+      addGoal(null, addGoalInput)
+        .then(value => {
+          // Close the modal
+          setIsModalOpen(false);
+        })
     }
 
     function isFutureDay(dateString: string) {
@@ -67,7 +99,7 @@ export const AddGoalModal: React.FC<AddGoalModalProps> = ({
         
         {/* Save button */}
         <div className="save-button-container">
-          <IonButton className="save-button" onClick={getModalData}>Save</IonButton>
+          <IonButton className="save-button" onClick={onAddGoal}>Create</IonButton>
         </div>
       </Modal>
     )

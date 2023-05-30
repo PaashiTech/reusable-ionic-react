@@ -39,14 +39,12 @@ function renderButtons(
     }
   }
   return (
-    <IonGrid>
-      <IonRow>
-        {buttons}
-        <IonButton className="delete-button" fill="clear" color="danger" >
-          <IonIcon slot="icon-only" icon={trashBinOutline}></IonIcon>
-        </IonButton>
-      </IonRow>
-    </IonGrid>
+    <div className="buttons-container">
+      {buttons}
+      <IonButton className="delete-button" fill="clear" color="danger">
+        <IonIcon slot="icon-only" icon={trashBinOutline}></IonIcon>
+      </IonButton>
+    </div>
   );
 }
 

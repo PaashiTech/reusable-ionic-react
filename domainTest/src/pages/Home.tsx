@@ -7,7 +7,6 @@ import Income from '../components/income/Income';
 import Expenses from '../components/expense/Expenses';
 import { useState } from 'react';
 import { AddGoalModal } from '../components/goal/AddGoalModal';
-import { GoalModalData } from '../components/goal/types';
 
 const segmentTabs = [
   {
@@ -30,11 +29,7 @@ const segmentTabs = [
 const Home: React.FC = () => {
   const [segmentState, setSegmentState] = useState(segmentTabs[0].id);
   const [addGoalModalState, setAddGoalModalState] = useState(false);
-  const [addGoalModalData, setAddGoalModalData] = useState<GoalModalData>({
-    name: '', 
-    targetDateString: ""
-  });
-
+  
   const title = "Money";
   const segmentButtons = segmentTabs.map((tabData) => {
     return (
@@ -62,7 +57,7 @@ const Home: React.FC = () => {
         <AddGoalModal 
           isModalOpen={addGoalModalState}
           setIsModalOpen={setAddGoalModalState}
-          setModalData={setAddGoalModalData}>
+          >
         </AddGoalModal>
 
         {/* Segment tabs */}

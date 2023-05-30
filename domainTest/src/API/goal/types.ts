@@ -1,7 +1,7 @@
 import { Goal } from "../../types/goal";
 
 // API params
-export type CreateGoalParams = null;
+export type AddGoalParams = null;
 
 export type GetGoalParams = { 
   id: string 
@@ -17,7 +17,7 @@ export type DeleteGoalParams = null;
 
 
 // API inputs
-export type CreateGoalInput = {
+export type AddGoalInput = {
   goal: Goal,
   createdOn: string
   updatedOn: string
@@ -39,7 +39,7 @@ export type GetGoalsInput = null
 
 
 // API outputs 
-export type CreateGoalOutput = null
+export type AddGoalOutput = null
 
 export type GetGoalOutput = Goal
 

@@ -45,9 +45,9 @@ export function useFetch<TState> ({ url, method }: UseFetchProps) {
       data: input? input: {}
     });
     
-    setIsLoading(false);
     setStatus(status);
     setData(data);
+    setIsLoading(false);
   };
 
   return { commonFetch, isLoading, data, status };

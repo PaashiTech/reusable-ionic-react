@@ -11,6 +11,12 @@ import { EditGoalModal } from "./EditGoalModal";
 interface GoalsProps {}
 
 const Goals: React.FC<GoalsProps> = () => {
+  const [editGoalModalState, setEditGoalModalState] = useState(false);
+  const [editGoalModalData, setEditGoalModalData] = useState<{ id: string } & GoalModalData>({
+    id: '',
+    name: '', 
+    targetDateString: ""
+  });
   const {
     editGoal: {
       query: editGoal,
@@ -22,21 +28,13 @@ const Goals: React.FC<GoalsProps> = () => {
       isLoading: getGoalsLoading,
       data: getGoalsData
     }
-  } = useGoalApi();
+  } = useGoalApi(editGoalModalData.id);
   
   //// TODO: Calls the API twice with MSW mock. Pretty ok, but not perfect.
   useEffect(() => {getGoals(null, null)}, [editGoalData]);
 
-  const [editGoalModalState, setEditGoalModalState] = useState(false);
-  const [editGoalId, setEditGoalId] = useState("");
-  const [editGoalModalData, setEditGoalModalData] = useState<GoalModalData>({
-    name: '', 
-    targetDateString: ""
-  });
-
-  function showEditModal(id: string, data: GoalModalData) {
-    setEditGoalId(id);
-    setEditGoalModalData(data);
+  function showEditModal(idStr: string, data: GoalModalData) {
+    setEditGoalModalData({ id: idStr, ...data});
     setEditGoalModalState(true);
   }
 
@@ -64,8 +62,6 @@ const Goals: React.FC<GoalsProps> = () => {
           isModalOpen={editGoalModalState}
           setIsModalOpen={setEditGoalModalState}
           modalPreviousData={editGoalModalData}
-          setModalData={setEditGoalModalData}
-          editGoalId={editGoalId}
           editGoalLoading={editGoalLoading}
           onSave={editGoal}
           >

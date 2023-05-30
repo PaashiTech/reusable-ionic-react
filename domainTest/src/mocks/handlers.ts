@@ -3,13 +3,27 @@
 
 import { rest } from "msw";
 import { goalsData } from "./mock_data/goals";
-import { EditGoalInput } from "../API/goal/types";
+import { AddGoalInput, EditGoalInput, GetGoalsOutput } from "../API/goal/types";
 
-let goalsDataMutable = goalsData;
+let goalsDataMutable = { ...goalsData };
 
 export const handlers = [
-  rest.post('/editGoal', (req, res, ctx) => {
-    const goalId = req.url.searchParams.get('id');
+  // Create a new goal
+  rest.post('/goal', (req, res, ctx) => {
+    req.json()
+      .then((data: AddGoalInput) => {
+        goalsDataMutable.goals.push(data.goal);
+      })
+    
+    return res(
+      ctx.status(200),
+      ctx.json({})
+    )
+  }),
+
+  // Update the goal given by `id`
+  rest.put('/goal/:id', (req, res, ctx) => {
+    const goalId = req.params.id;
     
     let matchedGoal = goalsDataMutable.goals.find((goal, i, obj) => {
       if (goal.id == goalId) {

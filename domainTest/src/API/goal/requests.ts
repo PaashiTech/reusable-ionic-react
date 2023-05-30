@@ -1,18 +1,18 @@
 import { 
   // Param Types 
-  CreateGoalParams,
+  AddGoalParams,
   GetGoalParams,
   GetGoalsParams,
   EditGoalParams,
   DeleteGoalParams,
   // Input types 
-  CreateGoalInput, 
+  AddGoalInput, 
   GetGoalInput, 
   GetGoalsInput,
   EditGoalInput,
   DeleteGoalInput, 
   // Output types 
-  CreateGoalOutput, 
+  AddGoalOutput, 
   GetGoalOutput, 
   GetGoalsOutput,
   EditGoalOutput,
@@ -21,29 +21,29 @@ import {
 import { useFetch } from "../_base/useFetch";
 
 //// CREATE
-export const useCreateGoal = () => {
-  const { commonFetch, isLoading, data, status } = useFetch<CreateGoalOutput>({
-    url: "createGoal",
+export const useAddGoal = () => {
+  const { commonFetch, isLoading, data, status } = useFetch<AddGoalOutput>({
+    url: "/goal",
     method: "POST"
   });
 
-  const createGoal = (
-    params: CreateGoalParams, 
-    input: CreateGoalInput
+  const addGoal = (
+    params: AddGoalParams, 
+    input: AddGoalInput
   ) => commonFetch({ params, input });
 
-  return { createGoal, isLoading, data, status };
+  return { addGoal, isLoading, data, status };
 }
 
 
 //// READ
-export const useGetGoal = () => {
+export const useGetGoal = (goalId: string) => {
   // adding <Goal> after useFetch will give the "data" value the type Goal. 
   // This really helps to flesh out the quality of life for the API and is part
   // of creating something that is self documenting. We put Goal because we know
   // that is what this endpoint will always return. 
   const { commonFetch, isLoading, data, status } = useFetch<GetGoalOutput>({
-    url: "/goal",
+    url: `/goal/${goalId}`,
     method: "GET"
   });
 
@@ -73,10 +73,10 @@ export const useGetGoals = () => {
 
 
 //// UPDATE
-export const useEditGoal = () => {
+export const useEditGoal = (goalId: string) => {
   const { commonFetch, isLoading, data, status } = useFetch<EditGoalOutput>({
-    url: "/editGoal",
-    method: "POST"
+    url: `/goal/${goalId}`,
+    method: "PUT"
   });
 
   const editGoal = (
@@ -89,10 +89,10 @@ export const useEditGoal = () => {
 
 
 //// DELETE
-export const useDeleteGoal = () => {
+export const useDeleteGoal = (goalId: string) => {
   const { commonFetch, isLoading, data, status } = useFetch<DeleteGoalOutput>({
-    url: "/deleteGoal",
-    method: "POST"
+    url: `/goal/${goalId}`,
+    method: "DELETE"
   });
 
   const deleteGoal = (

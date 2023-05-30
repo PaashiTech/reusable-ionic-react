@@ -1,4 +1,4 @@
-import { ReactNode, useRef, useState } from "react";
+import { ReactNode, useRef } from "react";
 import "./EditGoalModal.css"
 import { Modal } from "../_base/Modal";
 import { IonButton, IonDatetime, IonInput, IonItem, IonLabel, IonSpinner } from "@ionic/react";
@@ -9,9 +9,7 @@ interface EditGoalModalProps {
   children: ReactNode,
   isModalOpen: boolean,
   setIsModalOpen: (value: React.SetStateAction<boolean>) => void,
-  modalPreviousData: GoalModalData,
-  setModalData: (value: React.SetStateAction<GoalModalData>) => void,
-  editGoalId: string,
+  modalPreviousData: { id: string } & GoalModalData,
   editGoalLoading: boolean,
   onSave: (params: EditGoalParams, input: EditGoalInput) => Promise<void>
 }
@@ -21,8 +19,6 @@ export const EditGoalModal: React.FC<EditGoalModalProps> = ({
   isModalOpen, 
   setIsModalOpen, 
   modalPreviousData,
-  setModalData,
-  editGoalId,
   editGoalLoading,
   onSave
   }) => {
@@ -52,7 +48,7 @@ export const EditGoalModal: React.FC<EditGoalModalProps> = ({
 
       onSave(
         { 
-          id: editGoalId 
+          id: modalPreviousData.id
         }, 
         { 
           name: modalData.name!,
@@ -60,9 +56,6 @@ export const EditGoalModal: React.FC<EditGoalModalProps> = ({
           udpatedOn: today.toISOString()
         }
       ).then(value => {
-        // Cause the parent to re-render 
-        setModalData(modalData);
-
         // Close the modal
         setIsModalOpen(false);
       });

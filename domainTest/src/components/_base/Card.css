@@ -1,3 +1,8 @@
+.buttons-container {
+  display: flex;
+  padding: 5px;
+}
+
 .delete-button {
   margin-left: auto;
 }
