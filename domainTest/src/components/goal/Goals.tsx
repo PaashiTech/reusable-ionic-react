@@ -12,10 +12,10 @@ interface GoalsProps {}
 
 const Goals: React.FC<GoalsProps> = () => {
   const [editGoalModalState, setEditGoalModalState] = useState(false);
-  const [editGoalModalData, setEditGoalModalData] = useState<{ id: string } & GoalModalData>({
+  const [editGoalModalData, setEditGoalModalData] = useState<GoalModalData>({
     id: '',
     name: '', 
-    targetDateString: ""
+    targetDate: ""
   });
   const {
     editGoal: {
@@ -33,12 +33,12 @@ const Goals: React.FC<GoalsProps> = () => {
   //// TODO: Calls the API twice with MSW mock. Pretty ok, but not perfect.
   useEffect(() => {getGoals(null, null)}, [editGoalData]);
 
-  function showEditModal(idStr: string, data: GoalModalData) {
-    setEditGoalModalData({ id: idStr, ...data});
+  function showEditModal(data: GoalModalData) {
+    setEditGoalModalData(data);
     setEditGoalModalState(true);
   }
 
-  function getGoalCards() {
+  function showGoalCards() {
     const goalCards = getGoalsData?.goals?.map((goalData: Goal) => {
       return <Card 
         key={goalData.id}
@@ -48,10 +48,10 @@ const Goals: React.FC<GoalsProps> = () => {
         description={"Completed: " + goalData.completion + "%"}
         onEditButton={() => {
           showEditModal(
-            goalData.id,
             { 
+              id: goalData.id,
               name: goalData.name, 
-              targetDateString: goalData.targetDate.toString().split('T')[0]
+              targetDate: goalData.targetDate.toString().split('T')[0]
             }
           )} 
         }></Card>
@@ -75,7 +75,7 @@ const Goals: React.FC<GoalsProps> = () => {
     <div className="loading-spinner-container">
       <IonSpinner className="loading-spinner"></IonSpinner>
     </div> : 
-    getGoalCards();
+    showGoalCards();
 }
 
 export default Goals;

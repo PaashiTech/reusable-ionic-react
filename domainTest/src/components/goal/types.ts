@@ -1,4 +1,5 @@
 export type GoalModalData = {
+  id: string,
   name: string | undefined,
-  targetDateString: string | string[] | null | undefined
+  targetDate: string | string[] | null | undefined
 }

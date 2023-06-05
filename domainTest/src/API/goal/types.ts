@@ -18,9 +18,7 @@ export type DeleteGoalParams = null;
 
 // API inputs
 export type AddGoalInput = {
-  goal: Goal,
-  createdOn: string
-  updatedOn: string
+  goal: Goal
 }
 
 export type GetGoalInput = null;
@@ -28,7 +26,7 @@ export type GetGoalInput = null;
 export type EditGoalInput = {
   name: string,
   targetDate: string,     /** ISO string */
-  udpatedOn: string
+  lastUdpatedOn: string
 }
 
 export type DeleteGoalInput = {

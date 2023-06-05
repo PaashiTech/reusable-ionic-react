@@ -11,29 +11,27 @@ interface ModalProps {
 
 export const Modal: React.FC<ModalProps> = ({ children, title, isModalOpen, setIsModalOpen }) => {
   return (
-    <>
-      <IonModal 
-        isOpen={isModalOpen} 
-        className="modal"
-        backdropDismiss={false}
-        >
-        {/* Header */}
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle>{title}</IonTitle>
-            <IonButtons slot="end">
-              <IonButton color="danger" onClick={() => setIsModalOpen(false)}>Close</IonButton>
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
+    <IonModal 
+      isOpen={isModalOpen} 
+      className="modal"
+      backdropDismiss={false}
+      >
+      {/* Header */}
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>{title}</IonTitle>
+          <IonButtons slot="end">
+            <IonButton color="danger" onClick={() => setIsModalOpen(false)}>Close</IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
 
-        {/* Content */}
-        <IonContent>
-          <div className="modal-content">
-            {children}
-          </div>
-        </IonContent>
-      </IonModal>
-    </>
+      {/* Content */}
+      <IonContent>
+        <div className="modal-content">
+          {children}
+        </div>
+      </IonContent>
+    </IonModal>
   )
 }

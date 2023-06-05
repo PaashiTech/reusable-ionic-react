@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { ReactNode, useRef, useState } from "react";
+import { ReactNode, useRef } from "react";
 import "./AddGoalModal.css"
 import { Modal } from "../_base/Modal";
 import { IonButton, IonDatetime, IonInput, IonItem, IonLabel } from "@ionic/react";
@@ -45,19 +45,20 @@ export const AddGoalModal: React.FC<AddGoalModalProps> = ({
     function onAddGoal() {
       // Extract modal data here
       let modalData: GoalModalData = {
+        id: goalId,
         name: nameInput.current?.value?.toString(),
-        targetDateString: targetDateInput.current?.value?.toString().split('T')[0]
+        targetDate: targetDateInput.current?.value?.toString().split('T')[0]
       };
 
       const addGoalInput: AddGoalInput = {
         goal: {
-          id: goalId,
+          id: modalData.id,
           name: modalData.name!,
-          targetDate: getValidNewDate(modalData.targetDateString),
-          completion: 0
+          targetDate: getValidNewDate(modalData.targetDate),
+          completion: 0,
+          createdOn: today.toISOString(),
+          lastUpdatedOn: today.toISOString()
         },
-        createdOn: today.toISOString(),
-        updatedOn: today.toISOString()
       }
 
       addGoal(null, addGoalInput)

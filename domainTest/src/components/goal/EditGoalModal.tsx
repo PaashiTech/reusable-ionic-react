@@ -9,7 +9,7 @@ interface EditGoalModalProps {
   children: ReactNode,
   isModalOpen: boolean,
   setIsModalOpen: (value: React.SetStateAction<boolean>) => void,
-  modalPreviousData: { id: string } & GoalModalData,
+  modalPreviousData: GoalModalData,
   editGoalLoading: boolean,
   onSave: (params: EditGoalParams, input: EditGoalInput) => Promise<void>
 }
@@ -42,18 +42,19 @@ export const EditGoalModal: React.FC<EditGoalModalProps> = ({
     function getModalData() {
       // Extract modal data here
       let modalData: GoalModalData = {
+        id: modalPreviousData.id,
         name: nameInput.current?.value?.toString(),
-        targetDateString: targetDateInput.current?.value
+        targetDate: targetDateInput.current?.value
       };
 
       onSave(
         { 
-          id: modalPreviousData.id
+          id: modalData.id
         }, 
         { 
           name: modalData.name!,
-          targetDate: getValidNewDate(modalData.targetDateString),
-          udpatedOn: today.toISOString()
+          targetDate: getValidNewDate(modalData.targetDate),
+          lastUdpatedOn: today.toISOString()
         }
       ).then(value => {
         // Close the modal
@@ -101,7 +102,7 @@ export const EditGoalModal: React.FC<EditGoalModalProps> = ({
               presentation="date"
               min={minDate.toISOString()}
               max={maxDate.toISOString()}
-              value={modalPreviousData.targetDateString}
+              value={modalPreviousData.targetDate}
               className="datetime-selector" 
               isDateEnabled={isFutureDay}
               ref={targetDateInput}>
