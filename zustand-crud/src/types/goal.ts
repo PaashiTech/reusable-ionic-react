@@ -14,5 +14,6 @@ export type Goal = {
   createdOn: string,
   /** Date when the Goal was last updated. Expected - ISO date string. */
   lastUpdatedOn: string,
+  /** Escape hatch */
   details?: any
 }
