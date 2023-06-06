@@ -1,5 +1,5 @@
 {
-  "name": "domainTest",
+  "name": "basic-crud",
   "integrations": {
     "capacitor": {}
   },
