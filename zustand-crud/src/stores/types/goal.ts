@@ -45,7 +45,7 @@ export type AddGoalOutput = {
 
 export type GetGoalOutput = {
   status: number,
-  data: Goal
+  data: Goal | null
 };
 
 export type EditGoalOutput = {

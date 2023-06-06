@@ -18,34 +18,62 @@ interface GoalStoreState {
   getGoalsLoading: boolean,
   editGoalLoading: boolean,
   deleteGoalLoading: boolean,
+
+  /** Output of getGoal */
+  getGoalOutput: Goal | null,
 }
 
 interface GoalStoreActions {
   /** CREATE */
-  addGoal: (params: AddGoalParams, data: AddGoalInput) => AddGoalOutput
+  addGoal: (params: AddGoalParams, data: AddGoalInput) => AddGoalOutput,
 
   /** READ */
-  getGoal: (params: GetGoalParams, data: GetGoalInput) => GetGoalOutput
-  getGoals: (params: GetGoalsParams, data: GetGoalsInput) => GetGoalsOutput
+  getGoal: (params: GetGoalParams, data: GetGoalInput) => GetGoalOutput,
+  getGoals: (params: GetGoalsParams, data: GetGoalsInput) => GetGoalsOutput,
 
   /** UPDATE */
-  editGoal: (params: EditGoalParams, data: EditGoalInput) => EditGoalOutput
+  editGoal: (params: EditGoalParams, data: EditGoalInput) => EditGoalOutput,
 
   /** DELETE */
-  deleteGoal: (params: DeleteGoalParams, data: DeleteGoalInput) => DeleteGoalOutput
+  deleteGoal: (params: DeleteGoalParams, data: DeleteGoalInput) => DeleteGoalOutput,
 }
 
 const useGoalStore = create<
   GoalStoreState 
   & GoalStoreActions
-  >() ((set) => ({
+  >() ((set, get) => ({
   goals: [],
   addGoalLoading: false,
   getGoalLoading: false,
   getGoalsLoading: false,
   editGoalLoading: false,
   deleteGoalLoading: false,
+  getGoalOutput: null,
 
   // TODO: Add implementation of the CRUD API
+  addGoal(params: AddGoalParams, data: AddGoalInput) {
+    set((state) => ({ goals: state.goals.concat(data.goal)}));
+    return { data: null, status: 200 }
+  },
+
+  getGoal(params, data) {
+    set((state) => state);
+    return { data: null, status: 200 }
+  },
+
+  getGoals(params, data) {
+    set((state) => state);
+    return { data: null, status: 200 }
+  },
+
+  editGoal(params, data) {
+    set((state) => state);
+    return { data: null, status: 200 }
+  },
+
+  deleteGoal(params, data) {
+    set((state) => state);
+    return { data: null, status: 200 }
+  }
   })
 )
