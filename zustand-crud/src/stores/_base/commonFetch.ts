@@ -17,15 +17,15 @@ type CommonFetch = {
  * @param {string} method - REST API type (should be either "GET", "POST", "PUT" or "DELETE")
  * @param {Object} [params] - Parameters for the REST API request
  * @param {Object} [input] - Inputs for the endpoint
- * @returns {Promise<AxiosResponse<any, any>>} - Promise that will evaluate to status and the data of the request
+ * @returns {Promise<AxiosResponse<T, any>>} - Promise that will evaluate to status and the data of the request
  */
-export const commonFetch = ({ 
+export const commonFetch = <ResponseT>({ 
   url,
   method,
   params, 
   input
-}: CommonFetch): Promise<AxiosResponse<any, any>> => {
-  return axios.request({
+}: CommonFetch): Promise<AxiosResponse<ResponseT, any>> => {
+  return axios.request<ResponseT>({
     url: url,
     method: method,
     params: params? params : null,

@@ -30,6 +30,7 @@ export const handlers = [
         req.json().then((data: EditGoalInput) => {
           goalsDataMutable.goals[i].name = data.name;
           goalsDataMutable.goals[i].targetDate = data.targetDate;
+          goalsDataMutable.goals[i].lastUpdatedOn = data.lastUdpatedOn;
         })
       }
     })

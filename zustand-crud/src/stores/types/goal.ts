@@ -32,28 +32,13 @@ export type EditGoalInput = {
 export type DeleteGoalInput = null;
 
 /** Outputs */
-export type AddGoalOutput = {
-  status: number,
-  data: null
-};
-export type GetGoalOutput = {
-  status: number,
-  data: Goal | null
-};
+export type AddGoalOutput = null;
+export type GetGoalOutput = Goal | null;
 export type GetGoalsOutput = {
-  status: number,
-  data: {
-    goals: Goal[]
-  }
+  goals: Goal[]
 };
-export type EditGoalOutput = {
-  status: number,
-  data: null
-};
-export type DeleteGoalOutput = {
-  status: number,
-  data: null
-};
+export type EditGoalOutput = null;
+export type DeleteGoalOutput = null;
 
 
 /**
@@ -61,7 +46,7 @@ export type DeleteGoalOutput = {
  */
 export type GoalStoreState = {
   /** Main container for Goals */
-  goals: Goal[] | null,
+  goals: Goal[],
 
   /** Loading statuses for APIs */
   addGoalLoading: boolean,

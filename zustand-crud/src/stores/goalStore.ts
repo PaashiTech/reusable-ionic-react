@@ -3,13 +3,13 @@ import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { 
   // API types
-  AddGoalInput, AddGoalParams, 
-  GetGoalInput, GetGoalParams, 
-  GetGoalsInput, GetGoalsParams,
-  EditGoalInput,  EditGoalParams, 
-  DeleteGoalInput, DeleteGoalParams, 
+  AddGoalInput, AddGoalParams, AddGoalOutput,
+  GetGoalInput, GetGoalParams, GetGoalOutput, 
+  GetGoalsInput, GetGoalsParams, GetGoalsOutput, 
+  EditGoalInput,  EditGoalParams, EditGoalOutput, 
+  DeleteGoalInput, DeleteGoalParams, DeleteGoalOutput, 
   // Store types
-  GoalStoreState, GoalStoreActions,
+  GoalStoreState, GoalStoreActions,  
 } from "./types/goal";
 import { commonFetch } from "./_base/commonFetch";
 
@@ -27,7 +27,7 @@ export const useGoalStore = create<
     deleteGoalLoading: false,
     getGoalOutput: null,
 
-    addGoal: async (params: AddGoalParams, data: AddGoalInput) => {
+    addGoal: async (params: AddGoalParams, input: AddGoalInput) => {
       // To omit specific fields from params (e.g. id)
       const { 
         id: _, 
@@ -37,25 +37,25 @@ export const useGoalStore = create<
         state.addGoalLoading = true
       });
 
-      commonFetch({
+      return commonFetch<AddGoalOutput>({
         url: `/goal/${params.id}`,
         method: "POST",
         params: cleanParams,
-        input: data
-      }).then((response) => {
+        input: input
+      }).then(({ data, status }) => {
         // Upon succeed, update the global state
         set((state) => { 
-          state.goals = state.goals.concat(data.goal);
+          state.goals = state.goals.concat(data);
           state.addGoalLoading = false;
         });
-        return { data: response.data, status: response.status }
+        return { data: data, status: status }
       }).catch((error) => {
         // Upon error, log the erro
         console.log(error);
       });
     },
 
-    getGoal: async (params: GetGoalParams, data: GetGoalInput) => {
+    getGoal: async (params: GetGoalParams, input: GetGoalInput) => {
       // To omit specific fields from params (e.g. id)
       const { 
         id: _, 
@@ -65,48 +65,48 @@ export const useGoalStore = create<
         state.getGoalLoading = true
       });
 
-      commonFetch({
+      return commonFetch<GetGoalOutput>({
         url: `/goal/${params.id}`,
         method: "GET",
         params: cleanParams,
-        input: data
-      }).then((value) => {
+        input: input
+      }).then(({ data, status }) => {
         // Upon succeed, return the data
         set((state) => { 
-          state.getGoalOutput = value.data.goal;
+          state.getGoalOutput = data;
           state.getGoalLoading = false;
         });
-        return { data: value.data, status: value.status }
+        return { data: data, status: status }
       }).catch((error) => {
         // Upon failure, log the error 
         console.log(error);
       });
     },
 
-    getGoals: async (params: GetGoalsParams, data: GetGoalsInput) => {
+    getGoals: async (params: GetGoalsParams, input: GetGoalsInput) => {
       set((state) => {
         state.getGoalsLoading = true
       });
 
-      commonFetch({
+      return commonFetch<GetGoalsOutput>({
         url: "/goals",
         method: "GET",
         params: params,
-        input: data
-      }).then((value) => {
+        input: input
+      }).then(({ data, status }) => {
         // Upon succeed, set the global state
         set((state) => {
-          state.goals = value.data.goals;
+          state.goals = data.goals;
           state.getGoalsLoading = false;
         });
-        return { data: value.data, status: value.status }
+        return { data: data, status: status }
       }).catch((error) => {
         // Upon fail, log the error
         console.log(error);
       });
     },
 
-    editGoal: async (params: EditGoalParams, data: EditGoalInput) => {
+    editGoal: async (params: EditGoalParams, input: EditGoalInput) => {
       // To omit specific fields from params (e.g. id)
       const { 
         id: _, 
@@ -116,30 +116,31 @@ export const useGoalStore = create<
         state.editGoalLoading = true
       });
 
-      commonFetch({
+      return commonFetch<EditGoalOutput>({
         url: `/goal/${params.id}`,
         method: "PUT",
-        params: params,
-        input: data
-      }).then((value) => {
-        let elementId = get().goals.findIndex((goal) => goal.id === params.id);
+        params: cleanParams,
+        input: input
+      }).then(({ data, status }) => {
         // Upon succeed, set the global state
+        let elementId = get().goals.findIndex((goal) => goal.id === params.id);
+        
         if (elementId != -1) {
           set((state) => {
-            state.goals[elementId].name = data.name;
-            state.goals[elementId].targetDate = data.targetDate;
-            state.goals[elementId].lastUdpatedOn = data.lastUdpatedOn;
+            state.goals[elementId].name = input.name;
+            state.goals[elementId].targetDate = input.targetDate;
+            state.goals[elementId].lastUdpatedOn = input.lastUdpatedOn;
             state.editGoalLoading = false;
           });
         }
-        return { data: value.data, status: value.status };
+        return { data: data, status: status };
       }).catch((error) => {
         // Upon fail, log the error
         console.log(error);
       });
     },
 
-    deleteGoal: async (params: DeleteGoalParams, data: DeleteGoalInput) => {
+    deleteGoal: async (params: DeleteGoalParams, input: DeleteGoalInput) => {
       // To omit specific fields from params (e.g. id)
       const { 
         id: _, 
@@ -149,17 +150,21 @@ export const useGoalStore = create<
         state.deleteGoalLoading = true
       });
 
-      commonFetch({
+      commonFetch<DeleteGoalOutput>({
         url: `/goal/${params.id}`,
         method: "DELETE",
         params: cleanParams,
-        input: data
-      }).then((value) => {
+        input: input
+      }).then(({ data, status }) => {
+        // Upon succeed, delete the Goal instance from the state
+        let remainingGoals = get().goals.filter((goal) => goal.id !== params.id);
+
         set((state) => {
+          state.goals = remainingGoals;
           state.deleteGoalLoading = false;
         });
-        // Upon succeed, delete the Goal instance from 
-        return { data: value.data, status: value.status };
+        
+        return { data: data, status: status };
       }).catch((error) => {
         // Upon fail, log the error
         console.log(error);
