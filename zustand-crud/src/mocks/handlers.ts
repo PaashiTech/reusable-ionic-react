@@ -3,7 +3,7 @@
 
 import { rest } from "msw";
 import { goalsData } from "./mock_data/goals";
-import { AddGoalInput, EditGoalInput, GetGoalsOutput } from "../API/goal/types";
+import { AddGoalInput, EditGoalInput } from "../API/goal/types";
 
 let goalsDataMutable = { ...goalsData };
 

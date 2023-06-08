@@ -4,7 +4,9 @@ import { Goal } from "../../types/goal";
  * Types for APIs 
  */
 /** Params */
-export type AddGoalParams = null;
+export type AddGoalParams = {
+  id: string
+};
 export type GetGoalParams = { 
   id: string 
 };
@@ -12,7 +14,9 @@ export type GetGoalsParams = null;
 export type EditGoalParams = {
   id: string
 };
-export type DeleteGoalParams = null;
+export type DeleteGoalParams = {
+  id: string
+};
 
 /** Inputs */
 export type AddGoalInput = {
@@ -25,9 +29,7 @@ export type EditGoalInput = {
   targetDate: string,     /** ISO string */
   lastUdpatedOn: string
 };
-export type DeleteGoalInput = {
-  id: number
-};
+export type DeleteGoalInput = null;
 
 /** Outputs */
 export type AddGoalOutput = {
@@ -38,15 +40,17 @@ export type GetGoalOutput = {
   status: number,
   data: Goal | null
 };
+export type GetGoalsOutput = {
+  status: number,
+  data: {
+    goals: Goal[]
+  }
+};
 export type EditGoalOutput = {
   status: number,
   data: null
 };
 export type DeleteGoalOutput = {
-  status: number,
-  data: null
-};
-export type GetGoalsOutput = {
   status: number,
   data: null
 };
@@ -57,7 +61,7 @@ export type GetGoalsOutput = {
  */
 export type GoalStoreState = {
   /** Main container for Goals */
-  goals: Goal[],
+  goals: Goal[] | null,
 
   /** Loading statuses for APIs */
   addGoalLoading: boolean,
@@ -72,15 +76,15 @@ export type GoalStoreState = {
 
 export type GoalStoreActions = {
   /** CREATE */
-  addGoal: (params: AddGoalParams, data: AddGoalInput) => AddGoalOutput,
+  addGoal: (params: AddGoalParams, data: AddGoalInput) => Promise<any>,
 
   /** READ */
-  getGoal: (params: GetGoalParams, data: GetGoalInput) => GetGoalOutput,
-  getGoals: (params: GetGoalsParams, data: GetGoalsInput) => GetGoalsOutput,
+  getGoal: (params: GetGoalParams, data: GetGoalInput) => Promise<any>,
+  getGoals: (params: GetGoalsParams, data: GetGoalsInput) => Promise<any>,
 
   /** UPDATE */
-  editGoal: (params: EditGoalParams, data: EditGoalInput) => EditGoalOutput,
+  editGoal: (params: EditGoalParams, data: EditGoalInput) => Promise<any>,
 
   /** DELETE */
-  deleteGoal: (params: DeleteGoalParams, data: DeleteGoalInput) => DeleteGoalOutput,
+  deleteGoal: (params: DeleteGoalParams, data: DeleteGoalInput) => Promise<any>,
 }

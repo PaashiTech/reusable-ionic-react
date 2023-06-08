@@ -3,19 +3,19 @@ import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { 
   // API types
-  AddGoalInput, AddGoalOutput, AddGoalParams, 
-  GetGoalInput, GetGoalOutput, GetGoalParams, 
-  GetGoalsInput, GetGoalsOutput, GetGoalsParams,
-  EditGoalInput, EditGoalOutput, EditGoalParams, 
-  DeleteGoalInput, DeleteGoalOutput, DeleteGoalParams, 
+  AddGoalInput, AddGoalParams, 
+  GetGoalInput, GetGoalParams, 
+  GetGoalsInput, GetGoalsParams,
+  EditGoalInput,  EditGoalParams, 
+  DeleteGoalInput, DeleteGoalParams, 
   // Store types
   GoalStoreState, GoalStoreActions,
 } from "./types/goal";
+import { commonFetch } from "./_base/commonFetch";
 
-const useGoalStore = create<
-  GoalStoreState 
-  & GoalStoreActions
-  >() (
+export const useGoalStore = create<
+  GoalStoreState & GoalStoreActions
+  >()(
   immer(                          // To make state copying easier
   devtools(                       // To make debugging tool avaialbe in the browser
     (set, get) => ({
@@ -27,56 +27,144 @@ const useGoalStore = create<
     deleteGoalLoading: false,
     getGoalOutput: null,
 
-    // TODO: Add implementation of the CRUD API
-    addGoal(params: AddGoalParams, data: AddGoalInput) {
-      let output: AddGoalOutput = { data: null, status: 200 }; 
-      
-      set((state) => { 
-        goals: state.goals.concat(data.goal) 
+    addGoal: async (params: AddGoalParams, data: AddGoalInput) => {
+      // To omit specific fields from params (e.g. id)
+      const { 
+        id: _, 
+        ...cleanParams 
+      } = params;
+      set((state) => {
+        state.addGoalLoading = true
       });
-      
-      return output;
+
+      commonFetch({
+        url: `/goal/${params.id}`,
+        method: "POST",
+        params: cleanParams,
+        input: data
+      }).then((response) => {
+        // Upon succeed, update the global state
+        set((state) => { 
+          state.goals = state.goals.concat(data.goal);
+          state.addGoalLoading = false;
+        });
+        return { data: response.data, status: response.status }
+      }).catch((error) => {
+        // Upon error, log the erro
+        console.log(error);
+      });
     },
 
-    getGoal(params: GetGoalParams, data: GetGoalInput) {
-      let output: GetGoalOutput = { data: null, status: 200 };
-
+    getGoal: async (params: GetGoalParams, data: GetGoalInput) => {
+      // To omit specific fields from params (e.g. id)
+      const { 
+        id: _, 
+        ...cleanParams 
+      } = params;
       set((state) => {
-        state
+        state.getGoalLoading = true
       });
-      
-      return output;
+
+      commonFetch({
+        url: `/goal/${params.id}`,
+        method: "GET",
+        params: cleanParams,
+        input: data
+      }).then((value) => {
+        // Upon succeed, return the data
+        set((state) => { 
+          state.getGoalOutput = value.data.goal;
+          state.getGoalLoading = false;
+        });
+        return { data: value.data, status: value.status }
+      }).catch((error) => {
+        // Upon failure, log the error 
+        console.log(error);
+      });
     },
 
-    getGoals(params: GetGoalsParams, data: GetGoalsInput) {
-      let output: GetGoalsOutput = { data: null, status: 200 };
-      
+    getGoals: async (params: GetGoalsParams, data: GetGoalsInput) => {
       set((state) => {
-        state
+        state.getGoalsLoading = true
       });
 
-      return output;
+      commonFetch({
+        url: "/goals",
+        method: "GET",
+        params: params,
+        input: data
+      }).then((value) => {
+        // Upon succeed, set the global state
+        set((state) => {
+          state.goals = value.data.goals;
+          state.getGoalsLoading = false;
+        });
+        return { data: value.data, status: value.status }
+      }).catch((error) => {
+        // Upon fail, log the error
+        console.log(error);
+      });
     },
 
-    editGoal(params: EditGoalParams, data: EditGoalInput) {
-      let output: EditGoalOutput = { data: null, status: 200 };
-      
+    editGoal: async (params: EditGoalParams, data: EditGoalInput) => {
+      // To omit specific fields from params (e.g. id)
+      const { 
+        id: _, 
+        ...cleanParams 
+      } = params;
       set((state) => {
-        state
+        state.editGoalLoading = true
       });
-      
-      return output;
+
+      commonFetch({
+        url: `/goal/${params.id}`,
+        method: "PUT",
+        params: params,
+        input: data
+      }).then((value) => {
+        let elementId = get().goals.findIndex((goal) => goal.id === params.id);
+        // Upon succeed, set the global state
+        if (elementId != -1) {
+          set((state) => {
+            state.goals[elementId].name = data.name;
+            state.goals[elementId].targetDate = data.targetDate;
+            state.goals[elementId].lastUdpatedOn = data.lastUdpatedOn;
+            state.editGoalLoading = false;
+          });
+        }
+        return { data: value.data, status: value.status };
+      }).catch((error) => {
+        // Upon fail, log the error
+        console.log(error);
+      });
     },
 
-    deleteGoal(params: DeleteGoalParams, data: DeleteGoalInput) {
-      let output: DeleteGoalOutput = { data: null, status: 200 };
-
+    deleteGoal: async (params: DeleteGoalParams, data: DeleteGoalInput) => {
+      // To omit specific fields from params (e.g. id)
+      const { 
+        id: _, 
+        ...cleanParams 
+      } = params;
       set((state) => {
-        state
+        state.deleteGoalLoading = true
       });
 
-      return output;
-    }
+      commonFetch({
+        url: `/goal/${params.id}`,
+        method: "DELETE",
+        params: cleanParams,
+        input: data
+      }).then((value) => {
+        set((state) => {
+          state.deleteGoalLoading = false;
+        });
+        // Upon succeed, delete the Goal instance from 
+        return { data: value.data, status: value.status };
+      }).catch((error) => {
+        // Upon fail, log the error
+        console.log(error);
+      });
+    },
     })
   ))
-)
+);

@@ -1,6 +1,4 @@
-import { GetGoalsOutput } from "../../API/goal/types";
-
-export let goalsData: GetGoalsOutput = {
+export const goalsData  = {
   goals: [
     {
       id: "b5c1ac40-08ba-43f7-99bc-12db7cb50ef6",
