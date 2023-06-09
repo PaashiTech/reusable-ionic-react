@@ -70,6 +70,7 @@ export const handlers = [
       goalsDataMutable.goals.splice(matchedGoalIndex, 1);
       
       return res(
+        ctx.delay(300),
         ctx.status(200),
         ctx.json({})
       )

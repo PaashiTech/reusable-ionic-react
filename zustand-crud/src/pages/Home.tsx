@@ -1,28 +1,36 @@
-import { IonLabel, IonPage, IonSegment, IonSegmentButton, SegmentCustomEvent } from '@ionic/react';
+import { 
+  IonLabel, 
+  IonPage, 
+  IonSegment, 
+  IonSegmentButton, 
+  SegmentCustomEvent 
+} from '@ionic/react';
+import { useState } from 'react';
 import './Home.css';
+
 import Container from '../components/_base/Container';
-import Goals from '../components/goal/Goals';
 import FAB from '../components/_base/FAB';
+
+import Goals from '../components/goal/Goals';
 import Income from '../components/income/Income';
 import Expenses from '../components/expense/Expenses';
-import { useState } from 'react';
 import { AddGoalModal } from '../components/goal/AddGoalModal';
 
 const segmentTabs = [
   {
     id: "goals",
     title: "Goals",
-    getBody: () => {return <Goals></Goals>}
+    getBody: () => {return <Goals />}
   },
   {
     id: "income",
     title: "Income",
-    getBody: () => {return <Income></Income>}
+    getBody: () => {return <Income />}
   },
   {
     id: "expenses",
     title: "Expenses",
-    getBody: () => {return <Expenses></Expenses>}
+    getBody: () => {return <Expenses />}
   }
 ];
 
