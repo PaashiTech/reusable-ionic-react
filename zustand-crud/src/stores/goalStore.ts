@@ -29,23 +29,20 @@ export const useGoalStore = create<
 
     addGoal: async (params: AddGoalParams, input: AddGoalInput) => {
       // To omit specific fields from params (e.g. id)
-      const { 
-        id: _, 
-        ...cleanParams 
-      } = params;
       set((state) => {
         state.addGoalLoading = true
       });
+      let newGoalAdded = get().goals.concat(input.goal);
 
       return commonFetch<AddGoalOutput>({
-        url: `/goal/${params.id}`,
+        url: "/goal",
         method: "POST",
-        params: cleanParams,
+        params: params,
         input: input
       }).then(({ data, status }) => {
         // Upon succeed, update the global state
         set((state) => { 
-          state.goals = state.goals.concat(data);
+          state.goals = newGoalAdded;
           state.addGoalLoading = false;
         });
         return { data: data, status: status }
@@ -129,7 +126,7 @@ export const useGoalStore = create<
           set((state) => {
             state.goals[elementId].name = input.name;
             state.goals[elementId].targetDate = input.targetDate;
-            state.goals[elementId].lastUdpatedOn = input.lastUdpatedOn;
+            state.goals[elementId].lastUpdatedOn = input.lastUdpatedOn;
             state.editGoalLoading = false;
           });
         }

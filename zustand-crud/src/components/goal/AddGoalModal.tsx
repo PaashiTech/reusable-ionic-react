@@ -6,6 +6,7 @@ import { IonButton, IonDatetime, IonInput, IonItem, IonLabel } from "@ionic/reac
 import { GoalModalData } from "./types";
 import { AddGoalInput } from "../../API/goal/types";
 import { useGoalApi } from "../../API/goal/api";
+import { useGoalStore } from "../../stores/goalStore";
 
 interface AddGoalModalProps {
   children: ReactNode,
@@ -18,12 +19,13 @@ export const AddGoalModal: React.FC<AddGoalModalProps> = ({
   isModalOpen, 
   setIsModalOpen}) => {
     const goalId = uuidv4();
-    const {
-      addGoal: {
-        mutation: addGoal,
-        isLoading: addGoalLoading
-      }
-    } = useGoalApi(goalId);
+    // const {
+    //   addGoal: {
+    //     mutation: addGoal,
+    //     isLoading: addGoalLoading
+    //   }
+    // } = useGoalApi(goalId);
+    const addGoal = useGoalStore((state) => state.addGoal );
 
     const nameInput = useRef<HTMLIonInputElement>(null);
     const targetDateInput = useRef<HTMLIonDatetimeElement>(null);

@@ -4,9 +4,7 @@ import { Goal } from "../../types/goal";
  * Types for APIs 
  */
 /** Params */
-export type AddGoalParams = {
-  id: string
-};
+export type AddGoalParams = null;
 export type GetGoalParams = { 
   id: string 
 };

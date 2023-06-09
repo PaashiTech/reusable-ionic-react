@@ -1,12 +1,15 @@
 import "./Goals.css"
+import { useEffect, useState } from "react";
+import { shallow } from "zustand/shallow";
+import { IonSpinner } from "@ionic/react";
+
 import { Card } from "../_base/Card";
 import { CardType } from "../_base/types";
-import { useGoalApi } from "../../API/goal/api";
-import { useEffect, useState } from "react";
-import { IonSpinner } from "@ionic/react";
+import { EditGoalModal } from "./EditGoalModal";
+
 import { Goal } from "../../types/goal";
 import { GoalModalData } from "./types";
-import { EditGoalModal } from "./EditGoalModal";
+import { useGoalStore } from "../../stores/goalStore";
 
 interface GoalsProps {}
 
@@ -17,21 +20,30 @@ const Goals: React.FC<GoalsProps> = () => {
     name: '', 
     targetDate: ""
   });
-  const {
-    editGoal: {
-      query: editGoal,
-      isLoading: editGoalLoading,
-      data: editGoalData,
-    },
-    getGoals: {
-      query: getGoals,
-      isLoading: getGoalsLoading,
-      data: getGoalsData
-    }
-  } = useGoalApi(editGoalModalData.id);
+  // const {
+  //   editGoal: {
+  //     query: editGoal,
+  //     isLoading: editGoalLoading,
+  //     data: editGoalData,
+  //   },
+  //   getGoals: {
+  //     query: getGoals,
+  //     isLoading: getGoalsLoading,
+  //     data: getGoalsData
+  //   }
+  // } = useGoalApi(editGoalModalData.id);
+  const { goals, getGoals, getGoalsLoading } = useGoalStore(
+    (state) => ({ 
+      goals: state.goals,
+      getGoals: state.getGoals, 
+      getGoalsLoading: state.getGoalsLoading 
+    }),
+    shallow
+  )
+  
   
   //// TODO: Calls the API twice with MSW mock. Pretty ok, but not perfect.
-  useEffect(() => {getGoals(null, null)}, [editGoalData]);
+  useEffect(() => {getGoals(null, null)}, []);
 
   function showEditModal(data: GoalModalData) {
     setEditGoalModalData(data);
@@ -39,7 +51,7 @@ const Goals: React.FC<GoalsProps> = () => {
   }
 
   function showGoalCards() {
-    const goalCards = getGoalsData?.goals?.map((goalData: Goal) => {
+    const goalCards = goals?.map((goalData: Goal) => {
       return <Card 
         key={goalData.id}
         title={goalData.name}
@@ -62,8 +74,6 @@ const Goals: React.FC<GoalsProps> = () => {
           isModalOpen={editGoalModalState}
           setIsModalOpen={setEditGoalModalState}
           modalPreviousData={editGoalModalData}
-          editGoalLoading={editGoalLoading}
-          onSave={editGoal}
           >
         </EditGoalModal>
         {goalCards}

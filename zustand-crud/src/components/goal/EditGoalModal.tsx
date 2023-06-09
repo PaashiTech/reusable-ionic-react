@@ -4,14 +4,14 @@ import { Modal } from "../_base/Modal";
 import { IonButton, IonDatetime, IonInput, IonItem, IonLabel, IonSpinner } from "@ionic/react";
 import { GoalModalData } from "./types";
 import { EditGoalInput, EditGoalParams } from "../../API/goal/types";
+import { useGoalStore } from "../../stores/goalStore";
+import { shallow } from "zustand/shallow";
 
 interface EditGoalModalProps {
   children: ReactNode,
   isModalOpen: boolean,
   setIsModalOpen: (value: React.SetStateAction<boolean>) => void,
   modalPreviousData: GoalModalData,
-  editGoalLoading: boolean,
-  onSave: (params: EditGoalParams, input: EditGoalInput) => Promise<void>
 }
 
 export const EditGoalModal: React.FC<EditGoalModalProps> = ({ 
@@ -19,9 +19,12 @@ export const EditGoalModal: React.FC<EditGoalModalProps> = ({
   isModalOpen, 
   setIsModalOpen, 
   modalPreviousData,
-  editGoalLoading,
-  onSave
   }) => {
+    const { editGoalLoading, editGoal } = useGoalStore(
+      (state) => ({ editGoalLoading: state.editGoalLoading, editGoal: state.editGoal }),
+      shallow
+    )
+
     const nameInput = useRef<HTMLIonInputElement>(null);
     const targetDateInput = useRef<HTMLIonDatetimeElement>(null);
 
@@ -47,7 +50,7 @@ export const EditGoalModal: React.FC<EditGoalModalProps> = ({
         targetDate: targetDateInput.current?.value
       };
 
-      onSave(
+      editGoal(
         { 
           id: modalData.id
         }, 
