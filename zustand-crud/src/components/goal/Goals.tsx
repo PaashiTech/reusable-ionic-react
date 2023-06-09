@@ -32,11 +32,17 @@ const Goals: React.FC<GoalsProps> = () => {
   //     data: getGoalsData
   //   }
   // } = useGoalApi(editGoalModalData.id);
-  const { goals, getGoals, getGoalsLoading } = useGoalStore(
+  const { 
+    goals, 
+    getGoals, 
+    getGoalsLoading,
+    deleteGoal
+  } = useGoalStore(
     (state) => ({ 
       goals: state.goals,
       getGoals: state.getGoals, 
-      getGoalsLoading: state.getGoalsLoading 
+      getGoalsLoading: state.getGoalsLoading,
+      deleteGoal: state.deleteGoal
     }),
     shallow
   )
@@ -66,7 +72,9 @@ const Goals: React.FC<GoalsProps> = () => {
               targetDate: goalData.targetDate.toString().split('T')[0]
             }
           )} 
-        }></Card>
+        }
+        onDeleteButton={() => deleteGoal({ id: goalData.id }, null) }
+        ></Card>
     });
     return (
       <>

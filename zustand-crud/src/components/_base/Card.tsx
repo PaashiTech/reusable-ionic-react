@@ -10,20 +10,22 @@ interface CardProps {
   cardType?: CardType;
   onEditButton?: () => void;
   onDetailsButton?: () => void;
+  onDeleteButton: () => void;
 };
 
 function renderButtons(
   cardType: CardType, 
-  edit: (() => void) | undefined, 
-  details: (() => void) | undefined) {
+  onEdit: (() => void) | undefined, 
+  onDetails: (() => void) | undefined,
+  onDelete: (() => void)) {
   let buttons: React.ReactElement = <></>;
   switch(cardType) {
     case CardType.Goal: {
       buttons = <>
-        <IonButton fill="clear" onClick={edit}>
+        <IonButton fill="clear" onClick={onEdit}>
           Edit
         </IonButton>
-        <IonButton fill="clear" onClick={details}>
+        <IonButton fill="clear" onClick={onDetails}>
           Details
         </IonButton>
       </>
@@ -31,7 +33,7 @@ function renderButtons(
     }
     case CardType.Income: {
       buttons = <>
-        <IonButton fill="clear" onClick={details}>
+        <IonButton fill="clear" onClick={onDetails}>
           Details
         </IonButton>
       </>
@@ -41,7 +43,12 @@ function renderButtons(
   return (
     <div className="buttons-container">
       {buttons}
-      <IonButton className="delete-button" fill="clear" color="danger">
+      <IonButton 
+        className="delete-button" 
+        fill="clear" 
+        color="danger"
+        onClick={onDelete}
+        >
         <IonIcon slot="icon-only" icon={trashBinOutline}></IonIcon>
       </IonButton>
     </div>
@@ -54,7 +61,8 @@ export const Card: React.FC<CardProps> = ({
     description, 
     cardType=CardType.Base,
     onEditButton,
-    onDetailsButton
+    onDetailsButton,
+    onDeleteButton
   }) => {
   return (
     <IonCard>
@@ -67,7 +75,7 @@ export const Card: React.FC<CardProps> = ({
       {/* Card description */}
       {description && <IonCardContent>{description}</IonCardContent>}
       
-      {renderButtons(cardType, onEditButton, onDetailsButton)}
+      {renderButtons(cardType, onEditButton, onDetailsButton, onDeleteButton)}
     </IonCard>
   )
 }

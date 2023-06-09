@@ -52,6 +52,31 @@ export const handlers = [
     }
   }),
 
+  // Delete the goal given by `id`
+  rest.delete('/goal/:id', (req, res, ctx) => {
+    const goalId = req.params.id;
+
+    let matchedGoalIndex: number = goalsDataMutable.goals.findIndex((goal, i, obj) => { 
+      return goal.id == goalId 
+    });
+
+    if (matchedGoalIndex < 0) {
+      return res(
+        ctx.status(404),
+        ctx.json({})
+      )
+    } else {
+      // Delete the element at the index
+      goalsDataMutable.goals.splice(matchedGoalIndex, 1);
+      
+      return res(
+        ctx.status(200),
+        ctx.json({})
+      )
+    }
+    
+  }),
+
   // Send all goals 
   rest.get('/goals', (req, res, ctx) => {
     return res(
