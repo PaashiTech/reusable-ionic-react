@@ -32,14 +32,24 @@ export const handlers = [
           goalsDataMutable.goals[i].targetDate = data.targetDate;
           goalsDataMutable.goals[i].lastUpdatedOn = data.lastUdpatedOn;
         })
+        return true;
+      } else {
+        return false;
       }
     })
 
-    return res(
-      // ctx.delay(1000),       // To mock delay in the response 
-      ctx.status(200),
-      ctx.json({})
-    )
+    if(matchedGoal !== undefined) {
+      return res(
+        // ctx.delay(1000),       // To mock delay in the response 
+        ctx.status(200),
+        ctx.json({})
+      )
+    } else {
+      return res(
+        ctx.status(404),
+        ctx.json({})
+      )
+    }
   }),
 
   // Send all goals 
