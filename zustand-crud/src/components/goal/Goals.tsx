@@ -20,18 +20,6 @@ const Goals: React.FC<GoalsProps> = () => {
     name: '', 
     targetDate: ""
   });
-  // const {
-  //   editGoal: {
-  //     query: editGoal,
-  //     isLoading: editGoalLoading,
-  //     data: editGoalData,
-  //   },
-  //   getGoals: {
-  //     query: getGoals,
-  //     isLoading: getGoalsLoading,
-  //     data: getGoalsData
-  //   }
-  // } = useGoalApi(editGoalModalData.id);
   const { 
     goals, 
     getGoals, 
@@ -45,8 +33,7 @@ const Goals: React.FC<GoalsProps> = () => {
       deleteGoal: state.deleteGoal
     }),
     shallow
-  )
-  
+  );
   
   //// TODO: Calls the API twice with MSW mock. Pretty ok, but not perfect.
   useEffect(() => {getGoals(null, null)}, []);

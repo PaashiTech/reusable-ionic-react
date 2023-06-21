@@ -19,12 +19,6 @@ export const AddGoalModal: React.FC<AddGoalModalProps> = ({
   isModalOpen, 
   setIsModalOpen}) => {
     const goalId = uuidv4();
-    // const {
-    //   addGoal: {
-    //     mutation: addGoal,
-    //     isLoading: addGoalLoading
-    //   }
-    // } = useGoalApi(goalId);
     const addGoal = useGoalStore((state) => state.addGoal );
 
     const nameInput = useRef<HTMLIonInputElement>(null);
