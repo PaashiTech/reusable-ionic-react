@@ -1,0 +1,7 @@
+{
+  "name": "zustand-crud",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
